@@ -126,11 +126,9 @@ def outputgroup(group_list, listname, subs, LATEX_MODE=False):
     print(f"")
 
 ## TODO convert all equations into objects with symbols and then printing them out
-def paper1(LATEX_MODE = False):
-    PI_SYM = symbols('pi', positive=True)
-
+def paper1(PAPER_NUM = -1, LATEX_MODE = False):
     # ==========================================
-    # SYSTEM 1: CHARACTERISTIC_INTEGERS
+    # SYSTEM 1: Structural Invariants
     # ==========================================
     DELTA_SYM, NU_SYM, SIGMA_SYM, CHI_SYM, D_SYM = symbols('Delta nu sigma chi D', integer=True, positive=True)
     CHARACTERISTIC_INTEGERS = [
@@ -158,7 +156,7 @@ def paper1(LATEX_MODE = False):
     ]
 
     print_section("SYSTEM 1: THE INVARIANT SUBSTRATE", LATEX_MODE)
-    outputgroup(CHARACTERISTIC_INTEGERS, "Characteristic Integers", e8_subs, LATEX_MODE)
+    outputgroup(CHARACTERISTIC_INTEGERS, "Structural Invariants", e8_subs, LATEX_MODE)
     outputgroup(DERIVED_LOADS, "Derived loads", e8_subs, LATEX_MODE)
 
     # ==========================================
@@ -214,6 +212,21 @@ def paper1(LATEX_MODE = False):
     ]
     outputgroup(PLANCKCHARGE, "Planck Charge Ratio", e8_subs, LATEX_MODE)
 
+    if PAPER_NUM == 1:
+        return
+
+    print_section("SYSTEM 4: GAUGE PARTITION", LATEX_MODE)
+    COORDINATE_OVERHEAD_SYM = symbols('eta')
+    ALPHA_S_SYM = symbols('alpha_s')
+    BETA_0_QCD_SYM = symbols('beta_0')
+    GAUGE_PARTITION = [
+        (COORDINATE_OVERHEAD_SYM, 1.0 - (1.0 / (D_SYM * DELTA_SYM))),
+        (ALPHA_S_SYM, ((NU_SYM * COORDINATE_OVERHEAD_SYM) + (1.0 / D_SYM)) / ALPHA_INV_SYM, ["alpha_s"]),
+        (BETA_0_QCD_SYM, (11.0 - UnevaluatedExpr(2.0/UnevaluatedExpr(3.0))*3.0))
+    ]
+    outputgroup(GAUGE_PARTITION, "Gauge Partition", e8_subs, LATEX_MODE)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Calculate E8 Persistence Constants")
     parser.add_argument('--latex', action='store_true', help='Output in catchfilebetweentags format')
@@ -223,7 +236,7 @@ def main():
     LATEX_MODE = args.latex
     PAPER_NUM = args.paper
     
-    paper1(LATEX_MODE)
+    paper1(PAPER_NUM, LATEX_MODE)
 
     if LATEX_MODE:
         me = REFS['me'].value
@@ -241,6 +254,8 @@ def main():
     N = 2 * NU
     R_M = D * DELTA
 
+    # SYSTEM 2
+    
     AlphaInv_CAP = PI * DELTA
     AlphaInv_MAP = CHI
     AlphaInv_PRO = -(1.0 / (R_M - SIGMA))
@@ -257,46 +272,21 @@ def main():
     if PAPER_NUM == 1:
         return
 
-
-    # ==========================================
-    # 4. SYSTEM IV: THE GEOMETRIC CONTROL ARCHITECTURE
-    # ==========================================
-    print_section("SYSTEM IV: THE GEOMETRIC CONTROL ARCHITECTURE", LATEX_MODE)
+    # SYSTEM 4
 
     COORDINATE_OVERHEAD = 1.0 - (1.0 / (D * DELTA))
-    if LATEX_MODE:
-        print(f"%<*InvCoordinateOverhead>{COORDINATE_OVERHEAD}%</InvCoordinateOverhead>")
-
     # --- Strong Coupling ---
     numerator_s = (NU*COORDINATE_OVERHEAD) + (1.0 / D)
     ALPHA_S_GEO = numerator_s / ALPHA_INV_GEO
-
-    print_derivation(
-        name="Strong Coupling (alpha_s) at M_Z",
-        tag="AlphaS",
-        formula_sym="(nu*eta + 1/D) / alpha_inv",
-        latex_sym=r"\frac{\nu \cdot \eta + 1/D}{\alpha^{-1}}",
-        formula_num=f"({NU} * {COORDINATE_OVERHEAD:.4f} + 0.25) / {ALPHA_INV_GEO:.4f}",
-        result=ALPHA_S_GEO,
-        latex_mode=LATEX_MODE,
-        ref_key="alpha_s",
-    )
 
     # --- QCD Running (Test 2: Evolution to Tau) ---
     BETA_0_QCD = 11.0 - (2.0/3.0)*3.0 # = 9.0
     M_TAU_REF = 1.77686
     M_Z_REF = REFS['mz'].value
-
     # 1. Linear 1-Loop Prediction (The Continuum Assumption)
-    log_term = math.log(M_TAU_REF / M_Z_REF)
-    denom_running = 1.0 + (BETA_0_QCD / (2.0 * PI)) * ALPHA_S_GEO * log_term
-    ALPHA_S_TAU_LINEAR = ALPHA_S_GEO / denom_running
-
+    ALPHA_S_TAU_LINEAR = ALPHA_S_GEO / (1.0 + (BETA_0_QCD / (2.0 * PI)) * ALPHA_S_GEO * math.log(M_TAU_REF / M_Z_REF))
     # 2. Saturation Correction (The Finite Capacity Reality)
-    # At strong coupling, channel saturation imposes a (N-1)/N efficiency limit.
-    # N = Nu = 16. Factor = 15/16 = 0.9375.
-    SATURATION_FACTOR = (NU - 1.0) / NU
-    ALPHA_S_TAU_CORRECTED = ALPHA_S_TAU_LINEAR * SATURATION_FACTOR
+    ALPHA_S_TAU_CORRECTED = ALPHA_S_TAU_LINEAR * ((NU - 1.0) / NU)
 
     # Output Tags
     print_derivation(
