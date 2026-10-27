@@ -1,0 +1,12 @@
+name = "pm_arch"
+version = "0.1.0"
+defaultTargets = ["PMArch"]
+
+[[lean_lib]]
+name = "PMArch"
+
+# The vendored class-number-one proof, built unmodified as a local package.
+# Mathlib (and its dependencies) are pinned through that package's manifest.
+[[require]]
+name = "ELEM"
+path = "classification"
