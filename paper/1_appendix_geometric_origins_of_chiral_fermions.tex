@@ -1,23 +1,8 @@
-% Here we connect the paper to the DG paper, not re-deriving anything in our paper.
 \crefalias{section}{appendix}
-\section{Geometric Origin of Chiral Fermions}
+\section{Chirality: Remaining Dynamical Requirements}
 \label{app:geometric_origin_of_chiral_fermions}
+The $D_4$ channel bookkeeping does not yet construct the observed chiral fermions. Distler and Garibaldi analyze candidate embeddings into real and complex forms of $E_8$ and obtain representation-theoretic obstructions to the required chiral gauge theory\cite{distler_there_2010}. Their result is not restricted to an everywhere Euclidean signature. Assigning an effective Lorentzian metric or starting from a discrete lattice does not by itself demonstrate an evasion of their hypotheses.
 
-% Establish context (history + theorem statement)
-The exceptional Lie group $E_8$ has long been explored as a candidate for unification because it is the smallest simple Lie group large enough to contain the Standard Model gauge group. Most famously, Garrett Lisi proposed embedding the Standard Model directly into the $E_8$ algebra \cite{lisi_exceptionally_2007}. However, the Distler-Garibaldi theorem \cite{distler_there_2010} established a rigorous no-go result: any signature-preserving algebraic embedding of the Standard Model into $E_8$ cannot yield chiral fermions without also producing unobserved mirror partners. Their theorem holds for all embeddings where the algebraic structure remains Euclidean $(8,0)$.
+In particular, an internal Euclidean geometry does not imply absence of a Hamiltonian: internal degrees of freedom can evolve with respect to the spacetime time coordinate. Treating some channels as static at quiescent equilibrium is an approximation or model restriction, not a proof that mirror states have zero propagating capacity.
 
-% Scope-guarded claim (what this appendix does and does NOT do)
-The Distler-Garibaldi constraint assumes a \textit{signature-preserving continuous Lie algebra} embedding. The $E_8$-Persistence theory operates outside this assumption via the metric signature projection $(8,0) \to (1,3) \oplus (4,0)$ (derived in \cref{sec:symmetric_decomposition} and \cref{sec:metric_signature}). Here we demonstrate that at the \textbf{strict quiescent-equilibrium baseline} (where dynamics reduce to static structural capacity) mirror states have zero causal capacity on the observable manifold. This is consistent with the no-go theorem's constraints at the static level; dynamical decoupling in the full effective field theory is left to future work.
-
-% Identify exact assumption violated
-% Explain why mirror states lack dynamics and Consequence: no dynamical Hamiltonian
-\paragraph{Formal Resolution:} The Distler-Garibaldi constraint assumes a \textit{signature-preserving continuous Lie algebra} embedding. The $E_8$-Persistence theory operates natively outside this assumption. As derived in \cref{sec:metric_signature}, Causality strictly forces a geometric projection onto an observable Lorentzian spacetime manifold $(1,3)$, leaving the orthogonal mirror degrees of freedom strictly within the Euclidean internal sector $(4,0)$. Because this internal sector retains the Euclidean signature $(+,+,+,+)$, it fundamentally lacks the timelike translation generator ($P_0 = \partial_t$) required for dynamical evolution. Consequently, mirror states lack the dynamical Hamiltonian necessary to propagate on the observable manifold.
-
-% Show mirror states are accounted for, not deleted
-These stationary states are not artificially deleted from the substrate's informational budget. As established in \cref{sec:total_node_capacity}, their degrees of freedom are fully accounted for within the internal sector's conserved bit-depth ($\nu_{\text{Sector B}} = 16$), exhausting their contribution to the total node capacity ($N=32$).
-
-% Explain what they are vs. what they are not
-Lacking a time-evolution operator, they encode static internal quantum numbers rather than propagating signals. They are geometrically inert on the causal manifold at the static baseline, without violating the strictly conserved discrete capacity of the substrate.
-
-% Reinforce scope guard; state future work
-At the quiescent-equilibrium baseline, this structural confinement renders the mirror states causally inert. No auxiliary fields or ad-hoc projection operators are required to suppress them at this static level. Whether mirror states acquire mass or decouple via a symmetry mechanism in the full dynamical theory is beyond the scope of the present derivation.
+A physical derivation must specify the microscopic state space and update, derive a low-energy fermion operator, identify its gauge representations and chirality, and explain the fate of any mirror modes while preserving the required conservation laws. It must then state precisely which hypotheses of the embedding obstruction apply. These dynamical tasks remain open and are not implied by the present Lean results.

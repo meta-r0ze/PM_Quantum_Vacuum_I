@@ -1,8 +1,14 @@
-\section{Defining the Vacuum Baseline}
+\section{The Vacuum as a Closed Persistent System}
 \label{sec:the_test_case}
-This paper tests Persistence Mechanics by applying it to the informationally minimal baseline: the quantum vacuum, a persistent system in with zero external flux, restricting the system to the equilibrium limit of the Quiescent Steady State. We refer to this special case as Quiescent Equilibrium. This establishes an absolute boundary condition. The vacuum admits no deeper system beneath it. It cannot obtain configuration information, boundary conditions, synchronization signals, or memory from an external source. We formalize this closed-system condition as:
+We apply PM to the vacuum in its quiescent steady state: stationary operation at zero external flux. The vacuum has no deeper system beneath it and no environment beside it. It cannot obtain configuration data, boundary conditions, synchronization signals, a measuring probe, or a unit of cost from outside itself. We state this as one constraint.
 \begin{quote}
-\textbf{The Closure Constraint:} The substrate of the vacuum must be entirely self-defining. Its geometry must arise exclusively from its own architectural requirements.
+\textbf{Closure Constraint.} The vacuum's state space, its update, and everything used to read, time, or price its states belong to the vacuum itself.
 \end{quote}
-Any non-zero selection entropy would require an external memory to resolve the degeneracy, violating self-specification.
 \label{subsec:closure}
+Closure is used in three concrete ways below.
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Internal probes.} Any readout of the substrate is made by the substrate. A probe is itself a substrate state, and its outcome is held at the substrate's own resolution (\Cref{sec:readability}).
+\item \textbf{No preferred label.} Nothing outside can single out one element of a finite set of labels the substrate cannot distinguish internally. Admissible sets are then empty or everything, and the only admissible probability on such a set is uniform (Lean: \texttt{ClosureSymmetry.invariant\_set}, \texttt{invariant\_measure\_uniform}).
+\item \textbf{One currency.} There is no external unit. Lengths, counts, and probabilities are all measured in elementary transitions, with one transition as the unit of cost.
+\end{enumerate}
+Conservation is read in PM's sense: the substrate preserves the distinctions that define its identity. On a finite state space with an autonomous update this means the update never merges two states, which is exactly bijectivity (Lean: \texttt{never\_merge\_iff\_bijective}).

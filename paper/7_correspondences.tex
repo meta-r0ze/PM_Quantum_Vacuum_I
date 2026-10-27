@@ -1,134 +1,66 @@
 \CatchFileBetweenTags{\AlphaInvCodataExperimentalVal}{constants.tex}{AlphaInvCodataExperimentalVal}
 \CatchFileBetweenTags{\AlphaInvCodataSigma}{constants.tex}{AlphaInvCodataSigma}
-
 \CatchFileBetweenTags{\AlphaInvMorelExperimentalVal}{constants.tex}{AlphaInvMorelExperimentalVal}
 \CatchFileBetweenTags{\AlphaInvMorelSigma}{constants.tex}{AlphaInvMorelSigma}
-
 \CatchFileBetweenTags{\AlphaInvParkerExperimentalVal}{constants.tex}{AlphaInvParkerExperimentalVal}
 \CatchFileBetweenTags{\AlphaInvParkerSigma}{constants.tex}{AlphaInvParkerSigma}
-
 \CatchFileBetweenTags{\AlphaInvFanExperimentalVal}{constants.tex}{AlphaInvFanExperimentalVal}
 \CatchFileBetweenTags{\AlphaInvFanSigma}{constants.tex}{AlphaInvFanSigma}
 
-\CatchFileBetweenTags{\VonKlitzingVal}{constants.tex}{VonKlitzingVal}
-\CatchFileBetweenTags{\VonKlitzingRkExperimentalVal}{constants.tex}{VonKlitzingRkExperimentalVal}
-\CatchFileBetweenTags{\VonKlitzingRkSigma}{constants.tex}{VonKlitzingRkSigma}
-
-\section{Empirical Correspondences and Observed Constants}
+\section{Empirical Correspondences}
 \label{sec:empirical_correspondences}
+$Z_{\rm geo}$ is a dimensionless property of the substrate. To compare it with experiment we must say which observable it is. This section is outside the main theorem: it adds one physical hypothesis and follows its consequences.
 
-The structural index $Z_{\text{geo}}$ is strictly dimensionless. To validate it against experiment, we translate the geometric bounds into macroscopic observables using the standard dimensional scaffolding ($\hbar$, $c$, $\epsilon_0$) that observers employ to measure flux. These are correspondence identities; they do not derive dimensional constants from the lattice.
+\subsection{Electromagnetic Matching}
+\label{sec:electromagnetic_matching}
+Suppose coarse graining the substrate yields a local $U(1)$ gauge theory. In rationalized natural units, with the connection normalized so that a unit charge enters as $D_\mu=\partial_\mu+iA_\mu$, write the leading term as $-\frac{1}{4g^2}F_{\mu\nu}F^{\mu\nu}$; then $\alpha=g^2/4\pi$\cite{tong_qft_2007}.
 
-The primary identification is with the inverse fine-structure constant. In macroscopic Quantum Electrodynamics (QED), the fine-structure constant $\alpha$ represents the dimensionless probability of interaction at any given vertex, precisely the role played by the substrate's causal coupling $\kappa$. We therefore establish the empirical correspondence:
+\textbf{Matching hypothesis.} The substrate's net impedance is the zero-momentum Maxwell coefficient:
 \begin{equation}
-\begin{split}    
-    \alpha^{-1}(0) &\equiv Z_{\text{geo}} \approx \AlphaInvVal \\
-    \alpha(0) &\equiv \kappa \approx \frac{1}{\AlphaInvVal}
-\end{split}
+\label{eq:maxwell_matching}
+\frac{4\pi}{g^2(0)}=Z_{\rm geo},\qquad\text{so}\qquad \alpha^{-1}(0)=Z_{\rm geo},\quad \alpha(0)=\kappa.
 \end{equation}
+The quiescent baseline has no external flux and no running fields, so it corresponds to the infrared limit $Q^2\to0$. The algebra and the inherited bounds are checked in Lean (\texttt{electromagnetic\_matching}, \texttt{physical\_inverse\_coupling\_bounds}). The coefficient $4\pi$ is part of the hypothesis: had the calculation produced $Z_{\rm geo}=C/g^2(0)$, the prediction would be $\alpha^{-1}(0)=(4\pi/C)Z_{\rm geo}$ (\texttt{matching\_coefficient}). Deriving \Cref{eq:maxwell_matching} requires the substrate's coupling to a background $U(1)$ connection and its quadratic response, which this paper does not compute.
 
-Because System 1 strictly isolates the substrate at \textbf{Quiescent Equilibrium} (zero external flux, no dynamic macroscopic fields), this calculation structurally corresponds directly to the deep infrared limit ($Q^2 \to 0$) of standard physics. The substrate's geometric admittance natively provides the zero-momentum fine-structure constant, demonstrating that the QED interaction probability perfectly mirrors the structural bounds of the underlying information substrate prior to dynamical screening (Renormalization Group running) at higher energies.
-
-From this primary identification ($\alpha^{-1}(0) \equiv Z_{\text{geo}}$), three further corollaries follow: the elementary charge as the quantized flux unit, the von Klitzing resistance as the channel quantization, and the geometric load limit as the vacuum breakdown threshold.
-
-\subsection{The Fine-Structure Constant and Quantization Gap}
+\subsection{The Fine-Structure Constant}
 \label{sec:fine_structure}
-
-% Establish the primary empirical anchor: Z_geo corresponds to alpha^-1(0).
-The structural index $Z_{\text{geo}}$ quantifies the substrate's intrinsic dimensionless coupling strength. In the analytic continuum dual, a static bound of this magnitude is identified with the inverse fine-structure constant, $\alpha^{-1}(0)$, with standard renormalization-group running governing dynamic variation around this fixed infrared baseline.
-
-% Present experimental tension (kinematic vs perturbative vs synthesis).
-Recent experimental values (\Cref{tab:alpha_comparison}) of $\alpha^{-1}(0)$ do not form a simple consensus and reflect ongoing metrological tension. Morel (2020) and Parker (2018) measure $\alpha^{-1}(0)$ kinematically using photon recoil (Rubidium and Cesium, respectively). Fan (2023) determines $\alpha^{-1}(0)$ via the electron anomalous magnetic moment ($g-2$). That these independent measurements are mutually exclusive is an open problem in standard metrology. CODATA (2022) synthesizes these conflicting inputs and its uncertainty reflects this tension.
-
-\begin{table}[ht]
+\begin{table}[t]
 \centering
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcc}
 \toprule
-\textbf{Source} & \textbf{Value ($\alpha^{-1}(0)$)} & \textbf{Dev.} \\
+\textbf{Source} & \textbf{$\alpha^{-1}(0)$} & \textbf{$Z_{\rm geo}-\alpha^{-1}$} \\
 \midrule
-Morel  (2020) & \AlphaInvMorelExperimentalVal & $\AlphaInvMorelSigma \sigma$ \\
-Fan (2023) & \AlphaInvFanExperimentalVal & $\AlphaInvFanSigma \sigma$\\
-Parker (2018) & \AlphaInvParkerExperimentalVal & $\AlphaInvParkerSigma \sigma$ \\
-CODATA (2022) & \AlphaInvCodataExperimentalVal & $\AlphaInvCodataSigma \sigma$ \\
+Morel (2020), Rb recoil & \AlphaInvMorelExperimentalVal & $\AlphaInvMorelSigma\,\sigma$ \\
+Fan (2023), electron $g-2$ & \AlphaInvFanExperimentalVal & $\AlphaInvFanSigma\,\sigma$\\
+Parker (2018), Cs recoil & \AlphaInvParkerExperimentalVal & $\AlphaInvParkerSigma\,\sigma$ \\
+CODATA (2022) & \AlphaInvCodataExperimentalVal & $\AlphaInvCodataSigma\,\sigma$ \\
 \bottomrule
-\end{tabular}
-\caption{Comparison of the $E_8$-Persistence structural index $Z_{geo}$ against experimental determinations of $\alpha^{-1}(0)$. Deviation is computed as $|Z_{geo} - \alpha^{-1}(0)_{exp}| / \sigma_{exp}$.}
+\end{tabular}%
+}
+\caption{$Z_{\rm geo}$ against determinations of $\alpha^{-1}(0)$. Deviations use the certified value of $Z_{\rm geo}$ and each source's quoted uncertainty (Lean: \texttt{alpha\_deviations}).}
 \label{tab:alpha_comparison}
 \end{table}
+Under the matching hypothesis the index predicts $\alpha^{-1}(0)$ with no adjustable parameter (\Cref{tab:alpha_comparison}). It agrees with the rubidium recoil measurement of Morel et al.\ within $0.58\,\sigma$ and with CODATA 2022 within $1.68\,\sigma$. The determinations themselves disagree: the Parker cesium recoil and Morel rubidium recoil values differ by more than $5\,\sigma$, and CODATA's uncertainty reflects that tension.
 
-% Explain Quantization Gap: continuum approximation saturates discrete hardware.
-\paragraph{The QED extraction tension and the Quantization Gap.}
-Standard QED serves as the analytic continuum dual to this discrete architecture. Dimensional regularization approximates the substrate at low loop orders by treating spacetime as continuous. However, because the substrate possesses finite channel capacity ($\nu=16$ per sector, $N=32$ total), this continuum approximation must eventually break down when its combinatorial complexity outstrips the discrete hardware. The number of QED diagrams grows factorially with loop order, while the available combinatorial state space of the substrate scales only exponentially as $\nu^n = 16^n$. Because factorial growth strictly overtakes finite exponential capacity, the continuous expansion must encounter the substrate's information-theoretic resolution limit at high loop orders. We term this regime the \textbf{Quantization Gap}.
+\paragraph{Quantization Gap hypothesis.} The substrate has finite channel capacity, while perturbative QED sums ever larger sets of diagrams. We conjecture that high-loop extractions of $\alpha$, such as from the electron $g-2$, deviate systematically from the kinematic baseline because the continuum expansion eventually exceeds the substrate's capacity. The Fan $g-2$ value lies $3.1\,\sigma$ below the index while Morel agrees within $0.6\,\sigma$, which is the pattern the hypothesis expects. It is not yet a prediction: that requires a mapping from diagrams to channel states, an onset loop order, and the sign and size of the correction to a named observable. Until then the table tests the matching hypothesis, not the gap.
 
-% Connect Dyson's observation to the structural mechanism.
-Dyson's 1952 observation\cite{dyson_divergence_1952} that the QED perturbative series is divergent asymptotic identified the mathematical signature; the $E_8$ substrate provides the structural mechanism. The continuum dual does not fail from a pathology in the coefficients, but from exhausting the finite Shannon capacity of the underlying geometric hardware.
+\paragraph{Falsification.} A robust determination of $\alpha^{-1}(0)$ several standard deviations from $Z_{\rm geo}$, with its theoretical corrections under control, would refute the conjunction of the postulates and the matching hypothesis.
 
-% Distinguish kinematic vs perturbative measurements.
-Morel (2020) measures $\alpha$ kinematically, a direct macroscopic probe of the geometric impedance that does not rely on quantum loop corrections. Fan (2023), by contrast, extracts $\alpha$ from a 10th-order (5-loop) QED perturbative expansion, placing it precisely in the regime where the continuum dual approaches capacity saturation. The $\AlphaInvFanSigma\sigma$ deviation observed in Fan (2023) is consistent with the expected onset of the Quantization Gap, though it does not alone constitute confirmation.
-
-% State falsification criterion.
-\paragraph{Falsification criterion.} If pure kinematic measurements continue to converge to $\alpha^{-1}(0) \approx \num{\AlphaInvVal}$ while 6+ loop QED extractions systematically diverge from this value, the Quantization Gap is confirmed. Conversely, convergence of both methods to a single identical value differing from our geometric prediction by $>5\sigma$ would decisively falsify the $E_8$-Persistence theory.
-
-\subsection{The Geometric Origin of Elementary Charge}
+\subsection{Elementary Charge, Resistance, and Field Scales}
 \label{sec:elementary_charge}
-% Frame Z_geo as flow constraint through chi=2 boundary. Identify emergent flux quantum with e.
-On the $E_8$ substrate, $Z_{\text{geo}}$ acts as a strict flow constraint: it restricts the amount of information flux that can propagate through a $\chi=2$ topological boundary without violating structural coherence. In standard macroscopic physics, this emergent quantum of flux is observed as the elementary charge $e$. Applying the empirical dimensional isomorphism that maps $Z_{\text{geo}}$ to the inverse fine-structure coupling yields:
-
-\begin{equation}
-    e = \sqrt{\frac{4\pi\epsilon_0\hbar c}{Z_{geo}}}
-\end{equation}
-
-The square-root form reflects that entropic action scales quadratically with information flux, while the geometric $4\pi$ factor arises from the isotropic boundary measure of the spherical topological defect ($S^2$, $\chi=2$) enclosing the flux.
-
-\subsection{Macroscopic Channel Resistance}
 \label{sec:channel_resistance}
-A geometric impedance should manifest as a measurable macroscopic transmission resistance. The theoretical resistance of a single discrete channel follows from three structural facts:
-
-\begin{enumerate}
-    \item \textbf{Single channel limit:} The vacuum substrate supports discrete transmission channels.
-    
-    \item \textbf{Spinor double cover:} Because the carrier states are spinors (\Cref{sec:chiralcapacity}), completing a closed circuit to return to the initial phase requires traversing the manifold twice ($720^\circ$). The measured resistance of a single loop is therefore the vacuum impedance shared across two windings: $R_{\text{channel}} = Z_{\text{channel}}/2$.
-    
-    \item \textbf{Geometric coupling:} The dimensionless scaling between a single internal channel and the bulk medium is $Z_{\text{channel}} / Z_0 = Z_{\text{geo}}$, where $Z_0$ is the characteristic impedance of free space.
-\end{enumerate}
-
-Combining these yields the structural prediction:
-\begin{equation}
-    R_{\text{channel}} = \frac{Z_{\text{channel}}}{2} = \frac{Z_0}{2} \, Z_{\text{geo}} \approx \mathbf{\VonKlitzingVal}.
-\end{equation}
-The factor of $1/2$ originates strictly from the spinor double cover; $Z_{\text{geo}}$ supplies the dimensionless geometric coupling. The observer imposes $Z_0 = \sqrt{\mu_0/\epsilon_0}$ as dimensional scaffolding to map this dimensionless geometric resistance into SI units (ohms).
-
-\paragraph{Correspondence with the von Klitzing constant ($R_K$):}
-Since the 2019 SI redefinition, $R_K = h/e^2$ is an exact defined constant (CODATA 2022: $R_K = 25812.80745\ldots\,\Omega$). The quantum Hall effect realizes this resistance as a macroscopic plateau, providing a precision consistency check independent of high-energy $\alpha^{-1}$ extractions. Because $Z_{\text{geo}}$ corresponds to $\alpha^{-1}(0)$, the structural prediction $R_{\text{channel}} = (Z_0/2) \, Z_{\text{geo}}$ algebraically coincides with $R_K$, confirming the internal consistency of the dimensional scaffolding.
-
-
-\textit{Physical consequence: the flatness of QHE plateaus.} 
-The quantization $R = R_{\text{channel}}/n$, regardless of impurities, reflects the lattice's discrete bit-depth: resistance is quantized by channel count, offering a structural origin for the topological protection traditionally attributed to electron wavefunction topology (Chern numbers) \cite{thouless_quantized_1982, kohmoto_topological_1985}.
-
-\CatchFileBetweenTags{\PlanckChargeAttenuationVal}{constants.tex}{PlanckChargeAttenuationVal}
-\CatchFileBetweenTags{\PlanckChargeRatioPercentageVal}{constants.tex}{PlanckChargeRatioPercentageVal}
-
-\subsection{The Geometric Load Limit}
 \label{sec:load_limit}
-
-The geometric impedance $Z_{\text{geo}}$ enforces a safety margin between operating signal and substrate breakdown. If the substrate can theoretically support a maximum unitary flux density $q_{\text{max}}$, the lattice impedance attenuates the stable, propagating flux $q_{\text{operating}}$ by the square root of the impedance:
-
+The matching hypothesis carries over to the observer's unit system through standard identities. With the Planck charge $q_P=\sqrt{4\pi\epsilon_0\hbar c}$,
 \begin{equation}
-    q_{operating} = \frac{q_{max}}{\sqrt{Z_{geo}}} \approx \frac{q_{max}}{\num{\PlanckChargeAttenuationVal}}
+e=\frac{q_P}{\sqrt{Z_{\rm geo}}},\qquad \frac{e}{q_P}=\sqrt{\kappa}.
 \end{equation}
-
-\textbf{Verification via the Planck Charge Ratio:}
-% Verify via Planck charge ratio. Frame as structural necessity.
-In standard physics, the absolute capacity of the vacuum is represented by the Planck charge $q_P$, and the fundamental operating flux is the elementary charge $e$. The empirical ratio $e/q_P \approx 0.085$ has historically lacked a structural explanation. On the $E_8$ substrate, this attenuation is a structural necessity preventing immediate vacuum breakdown.
-
-\paragraph{Physical consequence: Safe load limit.}
-The electron represents the safe operating limit of the vacuum. While the substrate can theoretically support a unitary charge ($q_P$), the geometric impedance restricts propagating charge to $\approx \num{\PlanckChargeRatioPercentageVal}\%$ of this maximum to maintain structural coherence.
-
-\paragraph{Physical consequence: Vacuum breakdown as capacity limit (Schwinger limit).}
-In the macroscopic QED dual, the standard model utilizes the electron mass $m_e$ as a characteristic scale for the Schwinger critical field $E_c = m_e^2 c^3/e\hbar$, marking the threshold where external electric fields spontaneously produce $e^+e^-$ pairs \cite{schwinger_gauge_1951}. Like $\hbar$, $c$, and $\epsilon_0$, the mass $m_e$ is part of the dimensional scaffolding supplied by the observer's measurement framework; it is not derived from the lattice. The Coulomb field of an elementary charge, evaluated at the reduced Compton wavelength $\lambdabar = \hbar/m_e c$, scales with this critical value by exactly the fine-structure constant $\alpha$:
+With the impedance of free space $Z_0=1/(\epsilon_0c)$, the von Klitzing constant is
 \begin{equation}
-    \frac{e}{4\pi\epsilon_0 \lambdabar^2} = \alpha E_c = \frac{E_c}{Z_{\text{geo}}}
+R_K=\frac{h}{e^2}=\frac{Z_0}{2}\,Z_{\rm geo}
 \end{equation}
-The dimensionless geometric impedance factor $Z_{\text{geo}} \approx \num{\AlphaInvVal}$ therefore represents the safety factor between the characteristic field of an isolated fundamental charge and the vacuum breakdown threshold. Any localized excitation attempting to concentrate flux beyond this margin hits the non-linear Schwinger ceiling, resolving into particle-antiparticle pairs and enforcing the substrate's ultimate capacity limit.
-
-The fine-structure constant is the primary structural correspondence, with $Z_{\text{geo}}$ as the dimensionless geometric index. The elementary charge, channel resistance, and vacuum breakdown threshold are algebraic consequences of this single correspondence under the standard dimensional scaffolding ($\hbar$, $c$, $\epsilon_0$, $m_e$). All four observables are therefore consistently constrained by the same substrate impedance.
+(\texttt{resistance\_identity}): the quantum of Hall resistance is half the impedance of free space times the substrate's net impedance per cycle. With the reduced Compton wavelength $\bar\lambda=\hbar/m_ec$ and the Schwinger field $E_c=m_e^2c^3/e\hbar$\cite{schwinger_gauge_1951},
+\begin{equation}
+\frac{e}{4\pi\epsilon_0\bar\lambda^2}=\frac{E_c}{Z_{\rm geo}}
+\end{equation}
+(\texttt{schwinger\_scale\_identity}). These follow from the one hypothesis $\alpha^{-1}(0)=Z_{\rm geo}$ and are not independent confirmations of it. In the 2019 SI, $e$ and $h$ are exact, so they constrain the relation between $\alpha$ and the measured $\epsilon_0$ (equivalently $\mu_0$)\cite{mohr_codata_2025}. Charge quantization, the Hall plateaus\cite{thouless_quantized_1982,kohmoto_topological_1985}, and pair-production dynamics need further structure.
