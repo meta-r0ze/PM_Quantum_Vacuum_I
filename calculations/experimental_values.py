@@ -114,11 +114,11 @@ PAPER3_REFS = {
     ),
 
     "mw": MeasuredVal(
-        80.377,
-        0.012,
-        3,
+        80.3692,
+        0.0133,
+        4,
         "GeV",
-        "navas_review_2024"  # Global Fit
+        "navas_review_2024"  # PDG 2024 direct average, CDF 2022 excluded
     ),
 
     # Specific W-Mass measurements for tension analysis
@@ -138,9 +138,11 @@ PAPER3_REFS = {
         "aaboud_improved_2023"
     ),
 
+    # On-shell 1 - mw^2/mz^2 from the direct "mw" and "mz" entries above,
+    # so this comparison is the same test as the W mass, not an independent one.
     "sin2_w": MeasuredVal(
-        0.22291,
-        0.00011,
+        0.22320,
+        0.00026,
         5,
         "",
         "navas_review_2024"

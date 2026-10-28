@@ -284,9 +284,14 @@ def main(argv=None):
     # SYSTEM 4
 
     COORDINATE_OVERHEAD = Decimal("1.0") - (Decimal("1.0") / (D * DELTA))
-    # --- Strong Coupling ---
-    numerator_s = (NU*COORDINATE_OVERHEAD) + (Decimal("1.0") / D)
-    ALPHA_S_GEO = numerator_s / ALPHA_INV_GEO
+    # --- Strong Coupling (colour ledger) ---
+    # One refresh per distinct required resource (Lean: MinimalRefresh, GaugeLedgers).
+    # The electroweak ledgers sum to the footprint N_sys; colour refreshes the payload of
+    # the 12 coloured channels (3 colours x u_L, d_L, u_R, d_R), each carrying eta.
+    N_SYS = (D * DELTA) + (NU * COORDINATE_OVERHEAD) + SIGMA
+    COLOURED_CHANNELS = Decimal("12")
+    COLOUR_LEDGER = COLOURED_CHANNELS * COORDINATE_OVERHEAD
+    ALPHA_S_GEO = N_SYS / (COLOUR_LEDGER * ALPHA_INV_GEO)
 
     # --- QCD Running (Test 2: Evolution to Tau) ---
     BETA_0_QCD = Decimal("11.0") - (Decimal("2.0")/Decimal("3.0"))*Decimal("3.0") # = 9.0
@@ -379,7 +384,7 @@ def main(argv=None):
         result=SIN2_THETA_W_GEO,
         latex_mode=LATEX_MODE,
         ref_key="sin2_w",
-        context="On-Shell definition",
+        context="on-shell value from the direct $M_W$ and $M_Z$",
         formula_step1=denom_weak
     )
 
@@ -387,7 +392,7 @@ def main(argv=None):
         name="Weak Mixing Angle (sin^2 theta_W)",
         tag="WeakAngleGlobal",
         formula_sym="Delta / (D*Delta + (ν * COORDINATE_OVERHEAD) + σ)",
-        latex_sym=r"\frac{\Delta}{D\Delta + \nu + \sigma}",
+        latex_sym=r"\frac{\Delta}{D\Delta + \nu\left(1 - \frac{1}{D\Delta}\right) + \sigma}",
         formula_num=f"{DELTA} / {denom_weak:.4f}",
         result=SIN2_THETA_W_GEO,
         latex_mode=LATEX_MODE,
@@ -658,7 +663,7 @@ def main(argv=None):
         result=MW_GEO,
         latex_mode=LATEX_MODE,
         ref_key="mw",
-        context="CDF/ATLAS Tension Mediator"
+        context="direct world average (CDF 2022 excluded)"
     )
 
     # --- Cabibbo Angle (Flavor Aperture) ---

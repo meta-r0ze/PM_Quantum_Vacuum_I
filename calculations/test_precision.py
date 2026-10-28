@@ -66,7 +66,7 @@ class PrecisionTests(unittest.TestCase):
             'FermiConst': ('0.00001166378', '0.00001166380'),
             'ElectronClosureRatio': ('0.99972687', '0.99972689'),
             'SurfaceReflectionFraction': ('0.000000001', '0.00000001'),
-            'StrongCouplingSquared': ('1.4816', '1.4817'),
+            'StrongCouplingSquared': ('1.4827', '1.4829'),
             'ElectronClosureCoefficient': ('1.28777', '1.28779'),
             'InterfaceFactor': ('1.0362', '1.0365'),
             'AntiscreeningRequired': ('0.0236', '0.0242'),
