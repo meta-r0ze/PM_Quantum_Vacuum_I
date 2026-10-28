@@ -45,6 +45,7 @@ import PMArch.TollFilters
 import PMArch.ClosureSymmetry
 import PMArch.PersistenceEvents
 import PMArch.PersistencePremises
+import PMArch.PersistenceMaximin
 import PMArch.FinalPremises
 import PMArch.NetCost
 import PMArch.NetIndex

@@ -142,7 +142,8 @@ Internal configuration: three legs (32 channels each) and an interaction directi
   (`TollFilters.nonaliasing_prob`).
 Under the uniform measure the probability is the product. On the channel labels the uniform
 measure is forced by the substrate's symmetries (`ChannelSymmetry.invariant_uniform`); on the
-`σ` directions and the target address it is Closure's no-preferred-label premise. -/
+`σ` directions and the target address it is the law that persists best for every reference
+(`PersistenceMaximin.toll_maximin`, which also derives the independence of the filters). -/
 theorem toll_persistence :
     tollTerm baseline =
       (((({0} : Finset (Fin 32)) ×ˢ ({0} : Finset (Fin 32)) ×ˢ

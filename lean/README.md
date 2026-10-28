@@ -68,7 +68,7 @@ Postulate I).
 | `PMArch/Lattices`, `RankEight`, `ThetaE8`, `E8Unique`, `Translation*`, `Postulates`, `ClaimBoundary` | lattice classification: theta series, rank divisible by 8, uniqueness of E8 |
 | `PMArch/Clock`, `ClockPlane`, `DiscriminantGroup`, `Scheduling`, `Selection`, `ClassNumber`, `ScheduleReconstruction`, `ScheduleReconstructionField` | clock, schedule window (the no-adjacent-idle hypothesis of the older route is discharged from gap-only reconstruction in `ScheduleReconstruction`), class number one |
 | `PMArch/SelfReadable`, `Parity`, `OrthogonalExchange`, `Sectors`, `Channels`, `ChannelSymmetry` | unimodularity, evenness, sectors, channels; the uniform channel measure from E8 symmetry |
-| `PMArch/DerivedParameters`, `E8Invariants`, `CapacityBarbier`, `CapacityEnvelope`, `CauchyPolygon`, `CircleLength`, `Distinctions`, `Descartes`, `TollFilters`, `ClosureSymmetry`, `PersistenceEvents`, `PersistencePremises`, `FinalPremises`, `NetCost`, `NetIndex`, `Impedance*`, `ProtocolToll` | parameters and the six terms |
+| `PMArch/DerivedParameters`, `E8Invariants`, `CapacityBarbier`, `CapacityEnvelope`, `CauchyPolygon`, `CircleLength`, `Distinctions`, `Descartes`, `TollFilters`, `ClosureSymmetry`, `PersistenceEvents`, `PersistenceMaximin`, `PersistencePremises`, `FinalPremises`, `NetCost`, `NetIndex`, `Impedance*`, `ProtocolToll` | parameters and the six terms |
 | `PMArch/Pillars`, `Comparison`, `PhysicalBridge` | PM failure modes, comparison with measurement, earlier bridge lemmas |
 | `PMArch/Research/` | alternative routes, counterexamples and necessity tests (not on the main path) |
 | `classification/` | vendored class-number-one proof (Peter W. Murphy, Apache-2.0) |

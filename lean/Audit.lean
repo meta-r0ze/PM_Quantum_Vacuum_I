@@ -202,6 +202,11 @@ import PMArch
 #print axioms PMArch.Capacity.perimeter_le
 #print axioms PMArch.Capacity.capacity_is_max
 #print axioms PMArch.ChannelSymmetry.invariant_uniform
+#print axioms PMArch.PersistenceMaximin.maximin_iff
+#print axioms PMArch.PersistenceMaximin.maximin_product
+#print axioms PMArch.PersistenceMaximin.toll_maximin
+#print axioms PMArch.PersistenceMaximin.protocol_maximin
+#print axioms PMArch.PersistenceMaximin.margin_maximin
 #print axioms PMArch.ChannelSymmetry.pair_choice
 #print axioms PMArch.Distinctions.cost_per_cut_edge
 #print axioms PMArch.Capacity.width_le
