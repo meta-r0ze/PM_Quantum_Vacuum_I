@@ -1,5 +1,7 @@
 #!python3
 import math
+from decimal import Decimal
+from high_precision import decimal
 
 from experimental_values import PAPER1_REFS, PAPER3_REFS
 REFS = {**PAPER1_REFS, **PAPER3_REFS}
@@ -8,22 +10,22 @@ PI = math.pi
 
 def format_float_latex(num, precision=9):
     """
-    Formats a float as a simple decimal string, avoiding scientific notation 
+    Formats a real number as a simple decimal string, avoiding scientific notation
     for numbers within the standard range (0.001 < x < 1000).
     """
     return f"{num:.{precision}f}".rstrip('0').rstrip('.')
 
 def to_latex_sci(num, precision=4, unit=""):
-    """Converts a float to LaTeX scientific notation."""
+    """Converts a float or Decimal to LaTeX scientific notation."""
     if num == 0: return "0"
-    exponent = int(math.floor(math.log10(abs(num))))
-    mantissa = num / (10**exponent)
+    exponent = num.adjusted() if isinstance(num, Decimal) else int(math.floor(math.log10(abs(num))))
+    mantissa = num.scaleb(-exponent) if isinstance(num, Decimal) else num / (10**exponent)
     
     # Standard range: Just return the number as a string
     if -3 <= exponent < 6:
         # Avoid unnecessary decimals for integers
-        if abs(num - round(num)) < 1e-9:
-            return f"{int(num)}"
+        if num == int(num):
+            return str(int(num))
         return f"{num:.{precision}f}".rstrip('0').rstrip('.')
     if unit != "":
         return f"{mantissa:.{precision}f}e{exponent}"
@@ -35,11 +37,15 @@ def to_latex_sci_with_err(val, err, precision=4):
     Ensures both share the same exponent for clean LaTeX: (1.2 +/- 0.1) x 10^19
     """
     if val == 0: return f"0 \\pm {err}"
-    exponent = int(math.floor(math.log10(abs(val))))
+    exponent = val.adjusted() if isinstance(val, Decimal) else int(math.floor(math.log10(abs(val))))
     
     # Normalize both by the main exponent
-    mantissa_val = val / (10**exponent)
-    mantissa_err = err / (10**exponent)
+    if isinstance(val, Decimal):
+        mantissa_val = val.scaleb(-exponent)
+        mantissa_err = decimal(err).scaleb(-exponent)
+    else:
+        mantissa_val = val / (10**exponent)
+        mantissa_err = err / (10**exponent)
     
     return f"({mantissa_val:.{precision}f} \\pm {mantissa_err:.{precision}f}) \\cdot 10^{{{exponent}}}"
 
@@ -89,8 +95,8 @@ def print_derivation(name, tag, formula_sym, latex_sym, formula_num, result,
         # 4. Experimental Comparison logic
         if ref_key and ref_key in REFS:
             ref_obj = REFS[ref_key]
-            target = ref_obj.value
-            err_val = ref_obj.uncertainty
+            target = decimal(ref_obj.value) if isinstance(result, Decimal) else ref_obj.value
+            err_val = decimal(ref_obj.uncertainty) if isinstance(result, Decimal) else ref_obj.uncertainty
             
             # Extract Citation
             cite_key = getattr(ref_obj, 'citation', None)
@@ -148,8 +154,8 @@ def print_derivation(name, tag, formula_sym, latex_sym, formula_num, result,
     # print(f"LaTeX Copy: \\mathbf{{{latex_str}}} {unit}")
 
     if ref_key and ref_key in REFS:
-        target = REFS[ref_key].value
-        err_val = REFS[ref_key].uncertainty
+        target = decimal(REFS[ref_key].value) if isinstance(result, Decimal) else REFS[ref_key].value
+        err_val = decimal(REFS[ref_key].uncertainty) if isinstance(result, Decimal) else REFS[ref_key].uncertainty
         diff = result - target
         
         print(f"Target:     {target:.12g} +/- {err_val:.2g} {unit}")
@@ -180,7 +186,7 @@ def run_global_audit_tier(results_dict, refs, checklist, latex_mode, name=""):
         print(f"{'GLOBAL GEOMETRIC AUDIT':^60}")
         print("="*60)
 
-    total_chi2 = 0.0
+    total_chi2 = 0
     dof = 0
     
     for calc_key, ref_key, display in checklist:
@@ -190,8 +196,10 @@ def run_global_audit_tier(results_dict, refs, checklist, latex_mode, name=""):
             ref = refs[ref_key] 
             
             # 2. Calculate Stats
-            diff = calc_val - ref.value
-            sigma = diff / ref.uncertainty
+            target = decimal(ref.value) if isinstance(calc_val, Decimal) else ref.value
+            error = decimal(ref.uncertainty) if isinstance(calc_val, Decimal) else ref.uncertainty
+            diff = calc_val - target
+            sigma = diff / error
             chi2 = sigma ** 2
             
             # 3. Determine Format based on magnitude

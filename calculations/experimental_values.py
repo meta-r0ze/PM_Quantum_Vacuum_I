@@ -240,10 +240,12 @@ PAPER3_REFS = {
         "navas_review_2024"
     ),
 
+    # Tree-level y_e = sqrt(2) m_e / v from the m_e and v entries above
+    # (uncertainty propagated from v); it is not separately measured.
     "ye_sm": MeasuredVal(
-        2.935e-6,
-        0.001e-6,
-        3,
+        2.9350284e-6,
+        0.0000007e-6,
+        7,
         "",
         "navas_review_2024"
     ),

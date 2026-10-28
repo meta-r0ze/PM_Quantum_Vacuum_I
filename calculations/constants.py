@@ -1,14 +1,17 @@
 #!python3
 
-import math
 import argparse
-from decimal import getcontext
+from decimal import Decimal, getcontext, localcontext
+from dataclasses import replace
+from high_precision import decimal, configure, pi as decimal_pi, sqrt as decimal_sqrt, log as decimal_log, exp as decimal_exp
 from sympy import symbols, Rational, N, latex, simplify, pretty, UnevaluatedExpr, pi, sqrt
 
 from experimental_values import PAPER1_REFS, PAPER3_REFS
-REFS = {**PAPER1_REFS, **PAPER3_REFS}
+# References retain their stated measurement precision; predictions use Decimal.
+REFS = {key: replace(ref, value=decimal(ref.value), uncertainty=decimal(ref.uncertainty))
+        for key, ref in {**PAPER1_REFS, **PAPER3_REFS}.items()}
 from output_helpers import (
-    PI, print_section, print_derivation, run_global_audit_tier, to_latex_sci
+    print_section, print_derivation, run_global_audit_tier, to_latex_sci
 )
 
 getcontext().prec = 5000
@@ -51,18 +54,13 @@ def format_latex_tag(val, precision=12):
     if hasattr(val, 'is_integer') and val.is_integer:
         return f"{int(val)}"
 
-    float_val = float(val)
+    number = decimal(val)
+    if number == number.to_integral_value():
+        return str(int(number))
+    if 0 < abs(number) < Decimal("0.001") or abs(number) >= Decimal("1e8"):
+        return f"{number:.{precision}e}"
+    return f"{number:.{precision}f}".rstrip('0').rstrip('.')
 
-    # Check if value is integer or within floating-point epsilon of an integer
-    if float_val.is_integer() or abs(float_val - round(float_val)) < 1e-12:
-        return f"{int(round(float_val))}"
-
-    # Tiny values needing scientific notation
-    if 0 < abs(float_val) < 1e-3 or abs(float_val) >= 1e8:
-        return f"{float_val:.{precision}e}"
-
-    # Standard decimal representation: format to precision then strip trailing zeroes
-    return f"{float_val:.{precision}f}".rstrip('0').rstrip('.')
 
 def outputgroup(group_list, listname, subs, LATEX_MODE=False):
     if not LATEX_MODE:
@@ -89,7 +87,7 @@ def outputgroup(group_list, listname, subs, LATEX_MODE=False):
         formula_sub = formula.subs(uneval_subs)
         latex_substituted = latex(formula_sub)
 
-        num_val = N(formula.subs(subs).doit())
+        num_val = decimal(formula.subs(subs).doit())
         precision = REFS[experimentalValues[0]].decimals if len(experimentalValues) > 0 else 12
         units = REFS[experimentalValues[0]].units if len(experimentalValues) > 0 else None
         formatted_val = format_latex_tag(num_val, precision)
@@ -196,7 +194,7 @@ def paper1(PAPER_NUM = -1, LATEX_MODE = False):
     SOL_SYM = symbols('SpeedOfLight')
     RK_SYM = symbols('VonKlitzing')
     VONKLITZING = [
-        (SOL_SYM, UnevaluatedExpr((10**-7) * 299792458)),
+        (SOL_SYM, UnevaluatedExpr(Rational(1, 10**7) * 299792458)),
         (RK_SYM, (4 * pi * SOL_SYM)/ (2 * ALPHA_SYM), ["rk"])
     ]
     outputgroup(VONKLITZING, "Von Klitzing Constant", e8_subs, LATEX_MODE)
@@ -220,18 +218,27 @@ def paper1(PAPER_NUM = -1, LATEX_MODE = False):
     ALPHA_S_SYM = symbols('alpha_s')
     BETA_0_QCD_SYM = symbols('beta_0')
     GAUGE_PARTITION = [
-        (COORDINATE_OVERHEAD_SYM, 1.0 - (1.0 / (D_SYM * DELTA_SYM))),
-        (ALPHA_S_SYM, ((NU_SYM * COORDINATE_OVERHEAD_SYM) + (1.0 / D_SYM)) / ALPHA_INV_SYM, ["alpha_s"]),
-        (BETA_0_QCD_SYM, (11.0 - UnevaluatedExpr(2.0/UnevaluatedExpr(3.0))*3.0))
+        (COORDINATE_OVERHEAD_SYM, 1 - 1 / (D_SYM * DELTA_SYM)),
+        (ALPHA_S_SYM, ((NU_SYM * COORDINATE_OVERHEAD_SYM) + (1 / D_SYM)) / ALPHA_INV_SYM, ["alpha_s"]),
+        (BETA_0_QCD_SYM, (11 - UnevaluatedExpr(Rational(2, 3))*3))
     ]
     outputgroup(GAUGE_PARTITION, "Gauge Partition", e8_subs, LATEX_MODE)
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Calculate E8 Persistence Constants")
     parser.add_argument('--latex', action='store_true', help='Output in catchfilebetweentags format')
     parser.add_argument('--paper', type=int, default=-1, choices=[1, 3], help='Select paper variant (e.g., 1 or 3 or -1 for all)')
-    args = parser.parse_args()
+    parser.add_argument('--digits', type=int, default=5000,
+                        help='Internal decimal precision (default: 5000; minimum: 30)')
+    args = parser.parse_args(argv)
+    try:
+        configure(args.digits)
+    except ValueError as exc:
+        parser.error(str(exc))
+    # Guard digits protect small differences such as the surface mismatch.
+    getcontext().prec += 20
+    PI = decimal_pi()
 
     LATEX_MODE = args.latex
     PAPER_NUM = args.paper
@@ -240,14 +247,14 @@ def main():
 
     if LATEX_MODE:
         me = REFS['me'].value
-        print(f"%<*MeMeV>{me}%</MeMeVPrint>")
+        print(f"%<*MeMeVPrint>{me}%</MeMeVPrint>")
         print("")
 
-    D     = 4
-    DELTA = 43
-    SIGMA = 5
-    NU    = 16
-    CHI   = 2
+    D     = Decimal("4")
+    DELTA = Decimal("43")
+    SIGMA = Decimal("5")
+    NU    = Decimal("16")
+    CHI   = Decimal("2")
     L_INTRINSIC = NU + SIGMA + CHI
     L_EMBED = L_INTRINSIC + (2 * D)
     L_SUBSTRATE = (DELTA * D) + NU
@@ -258,35 +265,46 @@ def main():
     
     AlphaInv_CAP = PI * DELTA
     AlphaInv_MAP = CHI
-    AlphaInv_PRO = -(1.0 / (R_M - SIGMA))
+    AlphaInv_PRO = -(Decimal("1.0") / (R_M - SIGMA))
     AlphaInv_GOV = -(CHI / DELTA)
-    AlphaInv_TOL = (1.0 * CHI * (R_M - SIGMA)) / (N**3 * SIGMA * R_M)
-    AlphaInv_MAR = 1.0 / (L_EMBED * (SIGMA + 1) * DELTA**2)
+    AlphaInv_TOL = (Decimal("1.0") * CHI * (R_M - SIGMA)) / (N**3 * SIGMA * R_M)
+    AlphaInv_MAR = Decimal("1.0") / (L_EMBED * (SIGMA + 1) * DELTA**2)
     ALPHA_INV_GEO = AlphaInv_CAP + AlphaInv_MAP + AlphaInv_PRO + AlphaInv_GOV + AlphaInv_TOL + AlphaInv_MAR
-    ALPHA_GEO = 1.0 / ALPHA_INV_GEO
+    ALPHA_GEO = Decimal("1.0") / ALPHA_INV_GEO
 
     # --- Von Klitzing Constant (Quantum Resistance) ---
-    Z0_SI = 4 * PI * (10**-7) * 299792458
+    Z0_SI = 4 * PI * Decimal("1e-7") * 299792458
     RK_GEO = Z0_SI / (2 * ALPHA_GEO)
 
     if PAPER_NUM == 1:
-        return
+        with localcontext() as ctx:
+            ctx.prec = args.digits
+            return {"AlphaInv": +ALPHA_INV_GEO, "Alpha": +ALPHA_GEO}
 
     # SYSTEM 4
 
-    COORDINATE_OVERHEAD = 1.0 - (1.0 / (D * DELTA))
+    COORDINATE_OVERHEAD = Decimal("1.0") - (Decimal("1.0") / (D * DELTA))
     # --- Strong Coupling ---
-    numerator_s = (NU*COORDINATE_OVERHEAD) + (1.0 / D)
+    numerator_s = (NU*COORDINATE_OVERHEAD) + (Decimal("1.0") / D)
     ALPHA_S_GEO = numerator_s / ALPHA_INV_GEO
 
     # --- QCD Running (Test 2: Evolution to Tau) ---
-    BETA_0_QCD = 11.0 - (2.0/3.0)*3.0 # = 9.0
-    M_TAU_REF = 1.77686
+    BETA_0_QCD = Decimal("11.0") - (Decimal("2.0")/Decimal("3.0"))*Decimal("3.0") # = 9.0
+    M_TAU_REF = Decimal("1.77686")
     M_Z_REF = REFS['mz'].value
     # 1. Linear 1-Loop Prediction (The Continuum Assumption)
-    ALPHA_S_TAU_LINEAR = ALPHA_S_GEO / (1.0 + (BETA_0_QCD / (2.0 * PI)) * ALPHA_S_GEO * math.log(M_TAU_REF / M_Z_REF))
+    ALPHA_S_TAU_LINEAR = ALPHA_S_GEO / (Decimal("1.0") + (BETA_0_QCD / (Decimal("2.0") * PI)) * ALPHA_S_GEO * decimal_log(M_TAU_REF / M_Z_REF))
     # 2. Saturation Correction (The Finite Capacity Reality)
-    ALPHA_S_TAU_CORRECTED = ALPHA_S_TAU_LINEAR * ((NU - 1.0) / NU)
+    ALPHA_S_TAU_CORRECTED = ALPHA_S_TAU_LINEAR * ((NU - Decimal("1.0")) / NU)
+
+    # 3. Threshold check (Lean: PMNested.StrongRunning): with Paper V's quark
+    # masses, five flavours are active on [m_b, M_Z] and four on [m_tau, m_b].
+    M_B_PM = pow(DELTA, 2) * (D + CHI / SIGMA) / COORDINATE_OVERHEAD * REFS['me'].value / 1000
+    BETA_0_NF5 = Decimal("11.0") - (Decimal("2.0")/Decimal("3.0"))*Decimal("5.0")
+    BETA_0_NF4 = Decimal("11.0") - (Decimal("2.0")/Decimal("3.0"))*Decimal("4.0")
+    ALPHA_S_TAU_THRESHOLD = 1 / (1 / ALPHA_S_GEO
+        + (BETA_0_NF5 / (2 * PI)) * decimal_log(M_B_PM / M_Z_REF)
+        + (BETA_0_NF4 / (2 * PI)) * decimal_log(M_TAU_REF / M_B_PM))
 
     # Output Tags
     print_derivation(
@@ -310,6 +328,17 @@ def main():
         ref_key="alpha_s_tau"
     )
 
+    print_derivation(
+        name="Alpha_s at Tau (1-loop, Paper V flavour thresholds)",
+        tag="AlphaSTauThreshold",
+        formula_sym="1-loop, nf=5 above m_b, nf=4 below",
+        latex_sym=r"\alpha_s^{\text{(1-loop, thresholds)}}",
+        formula_num=f"{ALPHA_S_TAU_THRESHOLD:.4f}",
+        result=ALPHA_S_TAU_THRESHOLD,
+        latex_mode=LATEX_MODE,
+        ref_key="alpha_s_tau"
+    )
+
     # --- QED Running (Test 3: Z-Pole Resonance) ---
     # 1. Screening Fog
     # The standard fermionic contribution to vacuum polarization approx 8.1
@@ -322,7 +351,7 @@ def main():
     # However, this unit channel is projected onto the D=4 manifold.
     # It is subject to the same Manifold Friction (eta) as the Chiral Capacity.
     # Effective Step = 1.0 * eta
-    RESONANCE_DROP = 1.0 * COORDINATE_OVERHEAD
+    RESONANCE_DROP = Decimal("1.0") * COORDINATE_OVERHEAD
     
     ALPHA_INV_MZ_CALC = ALPHA_INV_GEO - SCREENING_FOG - RESONANCE_DROP
 
@@ -331,7 +360,7 @@ def main():
         tag="AlphaRunning",
         formula_sym="alpha_inv - Fog - eta",
         latex_sym=r"\alpha^{-1}_{geo} - \Sigma Q^2 - \eta",
-        formula_num=f"{ALPHA_INV_GEO:.4f} - {SCREENING_FOG} - {COORDINATE_OVERHEAD:.4f}",
+        formula_num=f"{ALPHA_INV_GEO:.4f} - {SCREENING_FOG:.12g} - {COORDINATE_OVERHEAD:.4f}",
         result=ALPHA_INV_MZ_CALC,
         latex_mode=LATEX_MODE,
         ref_key="alpha_inv_mz",
@@ -389,23 +418,23 @@ def main():
 
     # 2. Radiative Correction (Topological Screening)
     # The field is screened by the Effective Dimension D_eff = D + Chi/4pi.
-    D_EFF = D + (CHI / (4.0 * math.pi))
-    POLARIZATION = 1.0 + (ALPHA_GEO / D_EFF)
+    D_EFF = D + (CHI / (Decimal("4.0") * PI))
+    POLARIZATION = Decimal("1.0") + (ALPHA_GEO / D_EFF)
     V_MEV_TOP = V_MEV_BARE * POLARIZATION
 
     # 3. Thermodynamic Noise Correction (Generation Partitioning)
     # The Persistence Margin (PM) is partitioned across the 3 generation channels.
     N_GEN = SIGMA - CHI
-    NOISE_CORRECTION = 1.0 - (AlphaInv_MAR / N_GEN)
+    NOISE_CORRECTION = Decimal("1.0") - (AlphaInv_MAR / N_GEN)
     V_MEV_PHYS = V_MEV_TOP * NOISE_CORRECTION
     
     # Final Physical VEV
     V_GEV_PHYS = V_MEV_PHYS
 
     # in GeV
-    V_MEV_BARE /= 1000.0
-    V_MEV_TOP /= 1000.0
-    V_GEV_PHYS /= 1000.0 
+    V_MEV_BARE /= Decimal("1000.0")
+    V_MEV_TOP /= Decimal("1000.0")
+    V_GEV_PHYS /= Decimal("1000.0")
 
     print_derivation(
         name="Higgs VEV (v)",
@@ -423,7 +452,7 @@ def main():
     )
 
     # --- Fermi Constant ---
-    GF_GEO = 1.0 / (math.sqrt(CHI) * pow(V_GEV_PHYS, 2))
+    GF_GEO = Decimal("1.0") / (decimal_sqrt(CHI) * pow(V_GEV_PHYS, 2))
 
     print_derivation(
         name="Fermi Constant (G_F)",
@@ -439,9 +468,9 @@ def main():
     # --- Higgs Parameters ---
     # Resonant Tax (Dynamics): 
     # The lattice oscillates at frequency Delta. We must subtract 1 unit of bandwidth (1/Delta)
-    LAMBDA_NET=((SIGMA - CHI) - (1.0 / DELTA))
+    LAMBDA_NET=((SIGMA - CHI) - (Decimal("1.0") / DELTA))
     LAMBDA_GEO = LAMBDA_NET / L_INTRINSIC
-    MH_GEO = math.sqrt(2 * LAMBDA_GEO) * V_GEV_PHYS
+    MH_GEO = decimal_sqrt(2 * LAMBDA_GEO) * V_GEV_PHYS
 
     print_derivation(
         name="Higgs Self-Coupling (λ)",
@@ -467,26 +496,141 @@ def main():
     )
 
     # --- Electron Yukawa (y_e) ---
+    # The Yukawa follows from the VEV through the mass law m_e = y_e v / sqrt(2).
+    # Lean (PMNested.ScaleConsistency.closure_exact) shows this closes exactly;
+    # the earlier independent dressing PM*(1 + (sigma/D) alpha) is excluded by
+    # the same joint check (closure coefficient c in (1.28777, 1.28779), not 5/4).
     YE_BARE = AlphaInv_MAR
-    PROJECTION_COEFF = SIGMA / D  # 1.25
-    SELF_ENERGY_CORRECTION = 1.0 + (PROJECTION_COEFF * ALPHA_GEO)
-    YE_CORRECTED = YE_BARE * SELF_ENERGY_CORRECTION
-    
+    YE_CLOSURE = decimal_sqrt(2) * (REFS['me'].value / 1000) / V_GEV_PHYS
+    CLOSURE_COEFFICIENT = (YE_CLOSURE / YE_BARE - 1) / ALPHA_GEO
+
     print_derivation(
-        name="Electron Yukawa (y_e) [Geometric]",
+        name="Electron Yukawa (y_e) [mass law from v]",
         tag="ElectronYukawa",
+        formula_sym="sqrt(2) * m_e / v",
+        latex_sym=r"\frac{\sqrt{2}\,m_e}{v}",
+        formula_num=f"sqrt(2) * m_e / {V_GEV_PHYS:.12g}",
+        result=YE_CLOSURE,
+        latex_mode=LATEX_MODE,
+        ref_key="ye_sm",
+        context="Closure-defined: not an independent prediction",
+        formula_step1=YE_BARE
+    )
+    print_derivation(
+        name="Electron closure coefficient c in y_e = PM(1 + c alpha)",
+        tag="ElectronClosureCoefficient",
+        formula_sym="(y_e/PM - 1)/alpha",
+        latex_sym=r"\left(\frac{y_e}{PM_{geo}}-1\right)\alpha^{-1}",
+        formula_num=f"({YE_CLOSURE:.12g}/{YE_BARE:.12g} - 1)/{ALPHA_GEO:.12g}",
+        result=CLOSURE_COEFFICIENT,
+        latex_mode=LATEX_MODE
+    )
+
+    # Earlier proposal, kept as a diagnostic only.
+    PROJECTION_COEFF = SIGMA / D  # 1.25
+    SELF_ENERGY_CORRECTION = Decimal("1.0") + (PROJECTION_COEFF * ALPHA_GEO)
+    YE_CORRECTED = YE_BARE * SELF_ENERGY_CORRECTION
+    print_derivation(
+        name="Electron Yukawa, sigma/D dressing [excluded by closure]",
+        tag="ElectronYukawaSigmaD",
         formula_sym="PM * (1 + (σ/D)α)",
         latex_sym=r"PM_{geo} \left(1 + \frac{\sigma}{D}\alpha \right)",
         formula_num=f"{YE_BARE:.4e} * (1 + 1.25*{ALPHA_GEO:.4f})",
         result=YE_CORRECTED,
         latex_mode=LATEX_MODE,
         ref_key="ye_sm",
-        context="Includes geometric charge projection (Sigma/D)",
+        context="Diagnostic: inconsistent with the VEV at 2.7e-4",
         formula_step1=YE_BARE
     )
 
+    # Joint consistency diagnostics: use the displayed canonical response at
+    # one scale. These checks do not replace the measured-Z validation below.
+    WEAK_SQUARED = 4 * PI * ALPHA_GEO / SIN2_THETA_W_GEO
+    HYPERCHARGE_SQUARED = 4 * PI * ALPHA_GEO / (1 - SIN2_THETA_W_GEO)
+    STRONG_SQUARED = 4 * PI * ALPHA_S_GEO
+    MW_RESPONSE = decimal_sqrt(WEAK_SQUARED) * V_GEV_PHYS / 2
+    MZ_RESPONSE = decimal_sqrt(WEAK_SQUARED + HYPERCHARGE_SQUARED) * V_GEV_PHYS / 2
+    ELECTRON_CLOSURE = YE_CORRECTED * V_GEV_PHYS / (decimal_sqrt(2) * (REFS['me'].value / 1000))
+    print_derivation(
+        name="W mass from the uncorrected common-scale response",
+        tag="WBosonMassFromResponse",
+        formula_sym="sqrt(g^2) * v / 2 (no measured M_Z input)",
+        latex_sym=r"\frac{gv}{2}",
+        formula_num=f"sqrt({WEAK_SQUARED:.12g}) * {V_GEV_PHYS:.12g} / 2",
+        result=MW_RESPONSE, latex_mode=LATEX_MODE, ref_key="mw"
+    )
+    print_derivation(
+        name="Z mass from the uncorrected common-scale response",
+        tag="ZBosonMassFromResponse",
+        formula_sym="sqrt(g^2 + g'^2) * v / 2",
+        latex_sym=r"\frac{v}{2}\sqrt{g^2+g'^2}",
+        formula_num=f"sqrt({WEAK_SQUARED + HYPERCHARGE_SQUARED:.12g}) * {V_GEV_PHYS:.12g} / 2",
+        result=MZ_RESPONSE, latex_mode=LATEX_MODE, ref_key="mz"
+    )
+    print_derivation(
+        name="Electron mass closure ratio",
+        tag="ElectronClosureRatio",
+        formula_sym="y_e * v / (sqrt(2) * m_e)",
+        latex_sym=r"\frac{y_e v}{\sqrt{2}m_e}",
+        formula_num=f"{YE_CORRECTED:.12g} * {V_GEV_PHYS:.12g} / (sqrt(2) * m_e)",
+        result=ELECTRON_CLOSURE, latex_mode=LATEX_MODE
+    )
+
+    # One interface factor k on alpha (VEV fixed): matching the Z anchor fixes k,
+    # and the same k applied to the strong readout leaves its window
+    # (Lean: PMNested.ScaleConsistency.z_needs_factor, same_scale_obstruction).
+    INTERFACE_FACTOR = pow(REFS['mz'].value / MZ_RESPONSE, 2)
+    STRONG_AT_INTERFACE = ALPHA_S_GEO * INTERFACE_FACTOR
+    print_derivation(
+        name="Interface factor k needed by the Z anchor",
+        tag="InterfaceFactor",
+        formula_sym="(M_Z / M_Z^response)^2",
+        latex_sym=r"\left(M_Z/M_Z^{\rm resp}\right)^2",
+        formula_num=f"({REFS['mz'].value} / {MZ_RESPONSE:.12g})^2",
+        result=INTERFACE_FACTOR, latex_mode=LATEX_MODE
+    )
+    print_derivation(
+        name="Strong readout with the same interface factor",
+        tag="StrongAtInterfaceFactor",
+        formula_sym="k * alpha_s",
+        latex_sym=r"k\,\alpha_s",
+        formula_num=f"{INTERFACE_FACTOR:.12g} * {ALPHA_S_GEO:.12g}",
+        result=STRONG_AT_INTERFACE, latex_mode=LATEX_MODE, ref_key="alpha_s"
+    )
+
+    # Pure Z-pole screening as the interface coupling overshoots k, and the
+    # remainder X in 1/k = 1 - delta_alpha + X must be positive
+    # (Lean: PMNested.ScaleResponse.zpole_not_interface, antiscreening_required).
+    ZPOLE_FACTOR = ALPHA_INV_GEO / ALPHA_INV_MZ_CALC
+    IMPLIED_DELTA_R = 1 - 1 / INTERFACE_FACTOR
+    print_derivation(
+        name="Radiative correction implied by the on-shell mixing and Z anchor",
+        tag="ImpliedDeltaR",
+        formula_sym="1 - 1/k",
+        latex_sym=r"\Delta r = 1-k^{-1}",
+        formula_num=f"1 - 1/{INTERFACE_FACTOR:.10g}",
+        result=IMPLIED_DELTA_R, latex_mode=LATEX_MODE
+    )
+    ANTISCREENING_REQUIRED = 1 / INTERFACE_FACTOR - 1 + QFT_POLARIZATION
+    print_derivation(
+        name="Interface factor if the Z-pole coupling were used",
+        tag="ZpoleFactor",
+        formula_sym="alpha_inv / alpha_inv(M_Z)",
+        latex_sym=r"\alpha^{-1}/\alpha^{-1}(M_Z)",
+        formula_num=f"{ALPHA_INV_GEO:.10g} / {ALPHA_INV_MZ_CALC:.10g}",
+        result=ZPOLE_FACTOR, latex_mode=LATEX_MODE
+    )
+    print_derivation(
+        name="Required anti-screening term X in 1/k = 1 - delta_alpha + X",
+        tag="AntiscreeningRequired",
+        formula_sym="1/k - 1 + delta_alpha",
+        latex_sym=r"k^{-1}-1+\Delta\alpha",
+        formula_num=f"1/{INTERFACE_FACTOR:.10g} - 1 + {QFT_POLARIZATION}",
+        result=ANTISCREENING_REQUIRED, latex_mode=LATEX_MODE
+    )
+
     # --- Jarlskog Invariant (Time Asymmetry) ---
-    PHI = (1 + math.sqrt(5)) / 2
+    PHI = (1 + decimal_sqrt(5)) / 2
     J_GEO = pow(PHI, 2) * AlphaInv_TOL * COORDINATE_OVERHEAD
 
     print_derivation(
@@ -503,10 +647,10 @@ def main():
 
     # --- W Boson Mass (Validation) ---
     MZ_EXP = REFS['mz'].value
-    MW_GEO = MZ_EXP * math.sqrt(1.0 - SIN2_THETA_W_GEO)
+    MW_GEO = MZ_EXP * decimal_sqrt(Decimal("1.0") - SIN2_THETA_W_GEO)
     
     print_derivation(
-        name="W Boson Mass (M_W)",
+        name="W Boson Mass (uses measured M_Z)",
         tag="WBosonMass",
         formula_sym="M_Z * sqrt(1 - sin2_theta_w)",
         latex_sym=r"M_Z \sqrt{1 - \sin^2\theta_W}",
@@ -587,7 +731,7 @@ def main():
     )
 
     # --- Gravitational Coupling ---
-    EXP_G = DELTA / 2.0
+    EXP_G = DELTA / Decimal("2.0")
     ALPHA_G_GEO = B_RES * pow(ALPHA_GEO, EXP_G)
 
     print_derivation(
@@ -603,8 +747,8 @@ def main():
     )
 
     # --- Planck Mass ---
-    MP_MEV_GEO = REFS["me"].value / math.sqrt(ALPHA_G_GEO)
-    MP_GEV_GEO = MP_MEV_GEO / 1000.0
+    MP_MEV_GEO = REFS["me"].value / decimal_sqrt(ALPHA_G_GEO)
+    MP_GEV_GEO = MP_MEV_GEO / Decimal("1000.0")
 
     print_derivation(
         name="Planck Mass (M_P)",
@@ -622,12 +766,12 @@ def main():
     # 1. Weak Aperture Target (with Manifold Friction)
     # The ideal aperture is (Sigma + 1) = 6.
     # The projection onto the manifold (D*Delta) introduces a friction term 1/(D*Delta).
-    APERTURE_IDEAL = SIGMA + 1.0
+    APERTURE_IDEAL = SIGMA + Decimal("1.0")
     APERTURE_PROJECTED = APERTURE_IDEAL * COORDINATE_OVERHEAD
     
     # 2. Higgs Impedance Calculation
     # Z_H = (1/lambda) * exp(-2*lambda)
-    Z_HIGGS = (1.0 / LAMBDA_GEO) * math.exp(-2.0 * LAMBDA_GEO)
+    Z_HIGGS = (Decimal("1.0") / LAMBDA_GEO) * decimal_exp(-Decimal("2.0") * LAMBDA_GEO)
     
     print_derivation(
         name="Higgs Impedance (Z_H)",
@@ -648,6 +792,8 @@ def main():
         result=APERTURE_PROJECTED,
         latex_mode=LATEX_MODE
     )
+
+    SURFACE_REFLECTION = ((APERTURE_PROJECTED - Z_HIGGS) / (APERTURE_PROJECTED + Z_HIGGS)) ** 2
 
     # ==========================================
     # 6. VACUUM ENERGY (THE 10^120 SOLUTION)
@@ -671,7 +817,7 @@ def main():
     # 4. Vacuum Density (rho_vac)
     # The entropic noise of the ground state, gated by admittance (alpha).
     # rho = (alpha/2) * M_min^4 (Natural Units)
-    RHO_VAC_MEV4 = (ALPHA_GEO / 2.0) * pow(M_GEO_MIN, 4)
+    RHO_VAC_MEV4 = (ALPHA_GEO / Decimal("2.0")) * pow(M_GEO_MIN, 4)
     
     # 5. Hierarchy Ratio (rho_vac / M_P^4)
     # Comparing the Vacuum Floor to the Planck Ceiling.
@@ -724,9 +870,9 @@ def main():
     # Optional: Print the physical wavelength for debugging/sanity check
     # h_bar * c approx 197.327 MeV*fm
     # lambda = (2 * pi * h_bar * c) / M_min
+    HBAR_C_MICRON = Decimal("197.327") * Decimal("1e-9") # MeV * micrometer (1 fm = 1e-9 micrometers)
+    LAMBDA_MICRON = (2 * PI * HBAR_C_MICRON) / M_GEO_MIN
     if not LATEX_MODE:
-        HBAR_C_MICRON = 0.197327 # MeV * micrometer
-        LAMBDA_MICRON = (2 * PI * HBAR_C_MICRON) / M_GEO_MIN
         print(f"  Physical Wavelength (lambda_min): {LAMBDA_MICRON:.2f} micrometers")
         print("-" * 60 + "\n")
 
@@ -743,6 +889,25 @@ def main():
     RESULTS["Jarlskog"] = J_GEO
     RESULTS["PlanckMass"] = MP_GEV_GEO
     run_global_audit(RESULTS, REFS, LATEX_MODE)
+    RESULTS.update(Alpha=ALPHA_GEO, HiggsLambda=LAMBDA_GEO,
+                   ElectronYukawa=YE_CLOSURE, ElectronYukawaSigmaD=YE_CORRECTED,
+                   ElectronClosureCoefficient=CLOSURE_COEFFICIENT,
+                   InterfaceFactor=INTERFACE_FACTOR, StrongAtInterfaceFactor=STRONG_AT_INTERFACE,
+                   ZpoleFactor=ZPOLE_FACTOR, AntiscreeningRequired=ANTISCREENING_REQUIRED,
+                   ImpliedDeltaR=IMPLIED_DELTA_R, AlphaSTauThreshold=ALPHA_S_TAU_THRESHOLD,
+                   HiggsImpedance=Z_HIGGS,
+                   WeakAperture=APERTURE_PROJECTED, GravCoupling=ALPHA_G_GEO,
+                   VacuumEnergyScale=VACUUM_HIERARCHY, FloorMassMeV=M_GEO_MIN,
+                   WavelengthMicrometers=LAMBDA_MICRON,
+                   WeakCouplingSquared=WEAK_SQUARED,
+                   HyperchargeCouplingSquared=HYPERCHARGE_SQUARED,
+                   StrongCouplingSquared=STRONG_SQUARED,
+                   WMassFromResponse=MW_RESPONSE, ZMassFromResponse=MZ_RESPONSE,
+                   WMassFromMeasuredZ=MW_GEO, ElectronClosureRatio=ELECTRON_CLOSURE,
+                   SurfaceReflectionFraction=SURFACE_REFLECTION)
+    with localcontext() as ctx:
+        ctx.prec = args.digits
+        return {name: +value for name, value in RESULTS.items()}
 
 if __name__ == "__main__":
     main()
