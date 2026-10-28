@@ -26,6 +26,7 @@ import PMArch.SelfReadable
 import PMArch.OrthogonalExchange
 import PMArch.Sectors
 import PMArch.Channels
+import PMArch.ChannelSymmetry
 import PMArch.Vacuum
 import PMArch.VacuumIndependence
 import PMArch.CliffordSignature
@@ -35,6 +36,8 @@ import PMArch.DerivedParameters
 import PMArch.E8Invariants
 import PMArch.CapacityBarbier
 import PMArch.CapacityEnvelope
+import PMArch.CircleLength
+import PMArch.CauchyPolygon
 import PMArch.Distinctions
 import PMArch.Descartes
 import PMArch.ProtocolToll

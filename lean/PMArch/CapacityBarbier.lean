@@ -23,8 +23,9 @@ Here `h` ranges over all continuous functions, a class containing every support 
 the upper bound covers convex envelopes a fortiori. `CapacityEnvelope` restates it on actual
 compact convex sets: the support function is computed from the set, the width bound is derived
 from a causal diameter bound, and the disk is shown to attain `πΔ`. Cauchy's formula
-(perimeter = `∫ h`) is used as the definition of the boundary measure in both files and is not
-proved.
+(perimeter = `∫ h`) is proved for convex polygons in `CauchyPolygon`, and the circle's arc length
+is computed in `CircleLength`, so `CauchyPolygon.capacity_is_max_length` states the bound for
+Euclidean boundary length.
 -/
 
 open Real intervalIntegral

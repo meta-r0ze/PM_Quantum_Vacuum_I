@@ -17,8 +17,9 @@ that the width condition follows from a causal premise instead of being assumed.
   cross and return within one cycle). `width_le` derives `support S θ + support S (θ + π) ≤ Δ`
   in every direction.
 * `perimeter E := ∫₀^{2π} support E θ`. For a convex body this is its boundary length
-  (Cauchy's formula). Cauchy's formula is **not proved here**; it is the identification of the
-  boundary measure with the support integral, stated as the definition.
+  (Cauchy's formula). Here it is the definition. `CauchyPolygon.cauchy` proves the formula for
+  convex polygons with Euclidean edge lengths, and `CircleLength.circle_length` gives the disk's
+  arc length `πΔ` directly.
 * `envelope_perimeter_le`: every causal envelope has perimeter `≤ πΔ`.
 * `disk_support`, `disk_causal`: the disk of radius `Δ/2` has constant support `Δ/2` and
   diameter `Δ`, so `capacity_is_max_envelope` shows `πΔ = capacityTerm` is the maximum over
@@ -152,8 +153,8 @@ theorem disk_perimeter {Δ : ℝ} (hΔ : 0 ≤ Δ) :
 
 /-- **Capacity is the causal maximum over convex envelopes.** Every compact convex envelope
 whose diameter respects the causal bound `Δ` has perimeter at most `πΔ = capacityTerm`, and the
-disk of diameter `Δ` attains it. Cauchy's formula (perimeter = support integral) is the one
-geometric identification not proved here. -/
+disk of diameter `Δ` attains it. For the bound on Euclidean length see
+`CauchyPolygon.capacity_is_max_length`. -/
 theorem capacity_is_max_envelope (p : Parameters) :
     (∀ E : Envelope, CausalDiameter E.carrier p.period → perimeter E ≤ capacityTerm p) ∧
       ∃ E : Envelope, CausalDiameter E.carrier p.period ∧ perimeter E = capacityTerm p := by

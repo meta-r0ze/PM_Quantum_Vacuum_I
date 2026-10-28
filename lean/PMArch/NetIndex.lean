@@ -12,7 +12,9 @@ unit (Closure). Provisioning pillars add transitions; regulating pillars remove 
 * **Capacity** — boundary transitions. The defect's identity is its distinctions from the vacuum
   (Conservation); a site all of whose neighbours share its state carries no distinction
   (`interior_carries_no_distinction`), so only the boundary costs. At speed one, refreshing one
-  unit of boundary takes one tick, i.e. one transition. The largest causally admissible boundary
+  unit of boundary takes one tick, i.e. one transition. The ordered distinction count lists each
+  boundary edge twice, so this is density `1/2` per ordered pair
+  (`Distinctions.cost_per_cut_edge`). The largest causally admissible boundary
   is `πΔ` for any shape (`Capacity.capacity_is_max`).
 * **Map** — `χ` boundary closures per cycle (unit weight).
 * **Toll, Margin** — probabilities of a valid transition / one configuration (incurred, `+`).

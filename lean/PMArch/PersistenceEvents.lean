@@ -140,7 +140,9 @@ Internal configuration: three legs (32 channels each) and an interaction directi
   (`Orientation.two_orientations`).
 * Non-aliasing (Causality): the target address avoids the σ embedded addresses
   (`TollFilters.nonaliasing_prob`).
-Under the uniform measure (Closure) the probability is the product. -/
+Under the uniform measure the probability is the product. On the channel labels the uniform
+measure is forced by the substrate's symmetries (`ChannelSymmetry.invariant_uniform`); on the
+`σ` directions and the target address it is Closure's no-preferred-label premise. -/
 theorem toll_persistence :
     tollTerm baseline =
       (((({0} : Finset (Fin 32)) ×ˢ ({0} : Finset (Fin 32)) ×ˢ

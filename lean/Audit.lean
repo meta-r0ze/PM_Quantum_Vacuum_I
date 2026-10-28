@@ -201,9 +201,16 @@ import PMArch
 #print axioms PMArch.Capacity.barbier
 #print axioms PMArch.Capacity.perimeter_le
 #print axioms PMArch.Capacity.capacity_is_max
+#print axioms PMArch.ChannelSymmetry.invariant_uniform
+#print axioms PMArch.ChannelSymmetry.pair_choice
+#print axioms PMArch.Distinctions.cost_per_cut_edge
 #print axioms PMArch.Capacity.width_le
 #print axioms PMArch.Capacity.disk_support
 #print axioms PMArch.Capacity.capacity_is_max_envelope
+#print axioms PMArch.CircleLength.circle_length
+#print axioms PMArch.Capacity.Polygon.ConvexPolygon.cauchy
+#print axioms PMArch.Capacity.Polygon.capacity_is_max_length
+#print axioms PMArch.Capacity.Polygon.unitSquare_causal
 #print axioms PMArch.TollFilters.residual_card
 #print axioms PMArch.TollFilters.nonaliasing_prob
 #print axioms PMArch.TollFilters.protocol_residual

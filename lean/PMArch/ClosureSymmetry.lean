@@ -16,6 +16,14 @@ cannot distinguish the labels of a finite set (every relabeling is a symmetry), 
 These replace two choices in Toll and Margin — "each leg samples the whole node channel set"
 and "the prior is uniform" — by one persistence premise: no label is distinguishable without
 external information.
+
+Where the substrate's symmetries are known, the premise is checked instead of assumed. On the
+32 channel labels the sector-preserving automorphisms of `E₈` act transitively, so invariance
+under them alone forces the uniform measure (`ChannelSymmetry.invariant_uniform`); on the `Δ`
+clock slots the clock advance does (`ImpedanceTerms.governor_uniform`). The `σ` interaction
+directions (three spatial positions and two boundary points, which are of different kinds), the
+residual target addresses and Margin's configurations have no such symmetry here: for those the
+uniform measure is this premise.
 -/
 
 namespace PMArch.ClosureSymmetry
