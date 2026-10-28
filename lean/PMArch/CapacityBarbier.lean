@@ -18,6 +18,13 @@ boundary measure of a convex envelope).
 
 So neither roundness nor saturation is a separate choice: Capacity is the maximal causally
 admissible boundary, and its value does not depend on the envelope's shape.
+
+Here `h` ranges over all continuous functions, a class containing every support function, so
+the upper bound covers convex envelopes a fortiori. `CapacityEnvelope` restates it on actual
+compact convex sets: the support function is computed from the set, the width bound is derived
+from a causal diameter bound, and the disk is shown to attain `πΔ`. Cauchy's formula
+(perimeter = `∫ h`) is used as the definition of the boundary measure in both files and is not
+proved.
 -/
 
 open Real intervalIntegral

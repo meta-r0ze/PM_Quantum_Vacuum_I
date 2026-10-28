@@ -15,7 +15,13 @@ theorem serialization_bound {N Δ : ℕ} (encode : Fin N → Fin Δ)
 
 /-- Every idle slot is immediately followed by an active slot. A permutation
 models reversible advancement; the bound also holds when it has multiple cycles.
-In particular it holds for advancement around a single periodic cycle. -/
+In particular it holds for advancement around a single periodic cycle.
+
+On a cycle this is "every idle run has length at most one". In this file and in
+`Selection`, `ClassNumber`, `Clock` and `MainResult` it is a hypothesis. It is
+derived from reconstruction under gap-only observation in `Sectors.obs_injOn_iff`, and
+`ScheduleReconstruction` discharges it (with the serialization map) for every theorem
+that takes it. -/
 def NoAdjacentIdle {Slot : Type*} [Fintype Slot] [DecidableEq Slot]
     (advance : Equiv.Perm Slot) (active : Finset Slot) : Prop :=
   ∀ s, s ∉ active → advance s ∈ active

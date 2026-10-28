@@ -27,11 +27,11 @@ Z_{\rm geo}=Z_{\rm CAP}+Z_{\rm MAP}+Z_{\rm TOL}+Z_{\rm MAR}-|Z_{\rm PRO}|-|Z_{\r
 \label{subsec:alpha_cap}
 A defect's identity is its set of distinctions from the vacuum. Let the maintenance cost be local, measured from the vacuum, and unchanged by exchanging the names of the two states (by Closure, which state is called ``vacuum'' is not intrinsic). Then the cost is one density times the number of neighbouring pairs in different states (Lean: \texttt{only\_distinctions\_cost}). Uniform regions, the defect's interior and the surrounding vacuum, cost nothing; only the boundary costs. An area cost satisfies the first two conditions but not the third (\texttt{area\_breaks\_relabeling}). At speed one, one unit of boundary is one tick, so the density is one transition.
 
-The defect's envelope lies in the causal plane. A signal must cross it and return within one cycle, so its width in every direction is at most $\Delta$. For a convex envelope with support function $h$, the width in direction $\theta$ is $h(\theta)+h(\theta+\pi)$ and the perimeter is $\int_0^{2\pi}h$. Width at most $w$ in every direction gives perimeter at most $\pi w$, with equality for every envelope of constant width $w$, whatever its shape (Barbier's theorem; Lean: \texttt{perimeter\_le}, \texttt{barbier}). Capacity is the allocation the causal bound permits:
+The defect's envelope is a compact convex set in the causal plane. A signal must cross it and return within one cycle, so any two of its points lie within distance $\Delta$. Its support function $h(\theta)=\max_{x}\langle x,(\cos\theta,\sin\theta)\rangle$ is continuous, and the diameter bound gives width $h(\theta)+h(\theta+\pi)\le\Delta$ in every direction (Lean: \texttt{CapacityEnvelope.width\_le}). The perimeter of a convex envelope is $\int_0^{2\pi}h$ (Cauchy's formula); this identification of the boundary measure is used as a definition and is not proved in Lean. Width at most $w$ in every direction gives perimeter at most $\pi w$, with equality for every envelope of constant width $w$, whatever its shape (Barbier's theorem; Lean: \texttt{perimeter\_le}, \texttt{barbier}). Capacity is the allocation the causal bound permits:
 \begin{equation}
 Z_{\rm CAP}=\pi\Delta\approx\num{\AlphaInvCAPVal}
 \end{equation}
-(\texttt{capacity\_is\_max}). Neither roundness nor saturation is a separate assumption.
+(\texttt{capacity\_is\_max}; on convex envelopes, \texttt{capacity\_is\_max\_envelope}, attained by the disk of diameter $\Delta$, \texttt{disk\_support}). Neither roundness nor saturation is a separate assumption.
 
 \subsection{Map}
 \label{subsec:alpha_map}

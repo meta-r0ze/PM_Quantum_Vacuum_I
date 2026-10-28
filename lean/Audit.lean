@@ -4,6 +4,12 @@ import PMArch
 #print axioms PMArch.serialization_bound
 #print axioms PMArch.periodic_schedule_bound
 #print axioms PMArch.schedule_selects_43
+#print axioms PMArch.ScheduleReconstruction.reconstructible_iff_noAdjacentIdle
+#print axioms PMArch.ScheduleReconstruction.schedule_selects_43_of_reconstructible
+#print axioms PMArch.ScheduleReconstruction.schedule_impedance_bounds_of_reconstructible
+#print axioms PMArch.ScheduleReconstruction.schedule_selects_43_of_field_reconstructible
+#print axioms PMArch.ScheduleReconstruction.schedule_selects_43_of_clock_reconstructible
+#print axioms PMArch.ScheduleReconstruction.clock_schedule_iff
 #print axioms PMArch.baseline_schedule_exists
 #print axioms PMArch.baseline_loads
 #print axioms PMArch.geometricIndex_exact
@@ -195,6 +201,9 @@ import PMArch
 #print axioms PMArch.Capacity.barbier
 #print axioms PMArch.Capacity.perimeter_le
 #print axioms PMArch.Capacity.capacity_is_max
+#print axioms PMArch.Capacity.width_le
+#print axioms PMArch.Capacity.disk_support
+#print axioms PMArch.Capacity.capacity_is_max_envelope
 #print axioms PMArch.TollFilters.residual_card
 #print axioms PMArch.TollFilters.nonaliasing_prob
 #print axioms PMArch.TollFilters.protocol_residual

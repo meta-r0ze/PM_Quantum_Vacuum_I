@@ -61,7 +61,7 @@ Gap-only observations reconstruct schedules with runs of length at most $k$ if a
 \begin{equation}
 N\le\Delta\le2N,\qquad 32\le\Delta\le64
 \end{equation}
-(\texttt{period\_window}). By Gauss reduction, the only discriminant in this window with a unique positive form is $-43$, proved directly without the classification (\texttt{clock\_unique\_iff}); the vendored class-number-one classification for number fields gives the same window independently. Therefore
+(\texttt{period\_window}). The bound on run length is derived, not imposed: on a single cycle, the periods of reconstructable schedules are exactly those of slot schedules with no two adjacent idle slots (\texttt{reconstructible\_iff\_noAdjacentIdle}), and the scheduling theorems stated with that slot condition as a hypothesis follow with it discharged (\texttt{schedule\_selects\_43\_of\_reconstructible}). The premise carrying the bound is the observation model of Postulate~I: an observation that also recorded run lengths would admit longer runs and remove the upper limit. By Gauss reduction, the only discriminant in this window with a unique positive form is $-43$, proved directly without the classification (\texttt{clock\_unique\_iff}); the vendored class-number-one classification for number fields gives the same window independently. Therefore
 \begin{equation}
 \Delta=43.
 \end{equation}

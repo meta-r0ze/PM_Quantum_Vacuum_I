@@ -18,6 +18,8 @@ import PMArch.ClassNumber
 import PMArch.Clock
 import PMArch.ClockPlane
 import PMArch.DiscriminantGroup
+import PMArch.ScheduleReconstruction
+import PMArch.ScheduleReconstructionField
 -- Persistence postulates and the substrate
 import PMArch.Parity
 import PMArch.SelfReadable
@@ -32,6 +34,7 @@ import PMArch.DerivedParameters
 -- The six terms
 import PMArch.E8Invariants
 import PMArch.CapacityBarbier
+import PMArch.CapacityEnvelope
 import PMArch.Distinctions
 import PMArch.Descartes
 import PMArch.ProtocolToll

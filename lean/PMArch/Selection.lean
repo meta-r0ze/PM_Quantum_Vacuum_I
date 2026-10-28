@@ -22,7 +22,9 @@ theorem delta_eq_43 {Δ : ℕ} (hc : Δ ∈ discriminantCandidates)
   simpa using hm
 
 /-- Compose actual serialization and scheduling hypotheses with the candidate
-list. Identifying 32 channels with 32 active slots is explicit. -/
+list. Identifying 32 channels with 32 active slots is explicit. The serialization and
+`NoAdjacentIdle` hypotheses are discharged from reconstruction in
+`ScheduleReconstruction.schedule_selects_43_of_reconstructible`. -/
 theorem schedule_selects_43 {Δ : ℕ}
     (encode : Fin 32 → Fin Δ) (hinj : Function.Injective encode)
     (advance : Equiv.Perm (Fin Δ)) (active : Finset (Fin Δ))
