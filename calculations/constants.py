@@ -219,7 +219,7 @@ def paper1(PAPER_NUM = -1, LATEX_MODE = False):
     BETA_0_QCD_SYM = symbols('beta_0')
     GAUGE_PARTITION = [
         (COORDINATE_OVERHEAD_SYM, 1 - 1 / (D_SYM * DELTA_SYM)),
-        (ALPHA_S_SYM, ((NU_SYM * COORDINATE_OVERHEAD_SYM) + (1 / D_SYM)) / ALPHA_INV_SYM, ["alpha_s"]),
+        (ALPHA_S_SYM, (D_SYM * DELTA_SYM + NU_SYM * COORDINATE_OVERHEAD_SYM + SIGMA_SYM) / (12 * COORDINATE_OVERHEAD_SYM * ALPHA_INV_SYM), ["alpha_s"]),
         (BETA_0_QCD_SYM, (11 - UnevaluatedExpr(Rational(2, 3))*3))
     ]
     outputgroup(GAUGE_PARTITION, "Gauge Partition", e8_subs, LATEX_MODE)
