@@ -134,7 +134,7 @@ theorem integer_exchange : integerMove (1,0) * integerMove (0,1) =
   rintro ⟨a,x,y⟩
   have htwo : (1 : ZMod 2)+1 = 0 := by decide
   simp [integerMove, integerPhase, Equiv.Perm.mul_apply,
-    add_assoc, add_left_comm, add_comm, htwo]
+    add_left_comm, add_comm, htwo]
 
 theorem integer_phase_nontrivial : integerPhase ≠ 1 := by
   intro h

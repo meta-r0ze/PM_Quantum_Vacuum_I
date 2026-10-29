@@ -137,7 +137,7 @@ theorem toll_dynamic_realization :
       frequency (fun t : Fin (Fintype.card TollSample) =>
         ((orbitAdvance orbit)^[t.val]) (orbit ⟨0, Fintype.card_pos⟩)) selectedTollEvent =
         tollQ := by
-  haveI : NeZero (Fintype.card TollSample) := ⟨Fintype.card_ne_zero⟩
+  have : NeZero (Fintype.card TollSample) := ⟨Fintype.card_ne_zero⟩
   let orbit : Fin (Fintype.card TollSample) ≃ TollSample := (Fintype.equivFin TollSample).symm
   refine ⟨orbit, ?_⟩
   have hz : (⟨0, Fintype.card_pos⟩ : Fin (Fintype.card TollSample)) = 0 := by
@@ -155,7 +155,7 @@ theorem margin_dynamic_realization :
       frequency (fun t : Fin (Fintype.card MarginSample) =>
         ((orbitAdvance orbit)^[t.val]) (orbit ⟨0, Fintype.card_pos⟩)) {(0,0,0,0)} =
         marginQ := by
-  haveI : NeZero (Fintype.card MarginSample) := ⟨Fintype.card_ne_zero⟩
+  have : NeZero (Fintype.card MarginSample) := ⟨Fintype.card_ne_zero⟩
   let orbit : Fin (Fintype.card MarginSample) ≃ MarginSample :=
     (Fintype.equivFin MarginSample).symm
   refine ⟨orbit, ?_⟩

@@ -51,7 +51,7 @@ def pairing (x y : Fin 8 → ℤ) : ℤ := dotProduct x (gram *ᵥ y)
 theorem even_norm (z : Fin 8 → ℤ) : ∃ k : ℤ, pairing z z = 2 * k := by
   refine ⟨(z 0)^2 + (z 1)^2 + (z 2)^2 + (z 3)^2 + (z 4)^2 + (z 5)^2 + (z 6)^2 + (z 7)^2 - z 0 * z 2 - z 1 * z 3 - z 2 * z 3 - z 3 * z 4 - z 4 * z 5 - z 5 * z 6 - z 6 * z 7, ?_⟩
   simp [pairing, gram, dotProduct, mulVec, Fin.sum_univ_succ]
-  <;> ring
+  ring
 
 /-- Every real vector with integral pairings has integral coordinates. -/
 theorem integral_dual (x : Fin 8 → ℝ)
@@ -84,7 +84,7 @@ theorem positive_norm (z : Fin 8 → ℤ) (hz : z ≠ 0) : 0 < pairing z z := by
   let a7 : ℤ := (1) * z 0
   have heq : 4 * pairing z z = a0^2 + a1^2 + a2^2 + a3^2 + a4^2 + a5^2 + a6^2 + a7^2 := by
     simp [pairing, gram, dotProduct, mulVec, Fin.sum_univ_succ, a0, a1, a2, a3, a4, a5, a6, a7]
-    <;> ring
+    ring
   by_contra h
   have hn : pairing z z ≤ 0 := by omega
   have hs0 := sq_nonneg a0
@@ -140,10 +140,10 @@ theorem d4_range_iff (z : Fin 8 → ℤ) :
     constructor
     · refine ⟨-w 6 + w 7, ?_⟩
       simp [d4Embedding, mulVec, dotProduct, Fin.sum_univ_succ]
-      <;> ring
+      ring
     · refine ⟨-w 6 + 2 * w 7, ?_⟩
       simp [d4Embedding, mulVec, dotProduct, Fin.sum_univ_succ]
-      <;> ring
+      ring
   · rintro ⟨⟨a, ha⟩, ⟨b, hb⟩⟩
     refine ⟨![a + z 1 - z 2, 2 * z 1 - z 3, z 1 - z 4 + b,
       -a + z 1 - b, -a + 2 * b - z 6, -2 * a + 2 * b - z 7,
@@ -171,7 +171,7 @@ theorem d4_direct_sum_norm (w : Fin 8 → ℤ) :
     pairing (d4Embedding *ᵥ w) (d4Embedding *ᵥ w) =
       d4Norm ![w 0, w 1, w 2, w 3] + d4Norm ![w 4, w 5, w 6, w 7] := by
   simp [pairing, gram, d4Embedding, d4Norm, dotProduct, mulVec, Fin.sum_univ_succ]
-  <;> ring
+  ring
 
 private theorem det_unit_of_inverse {n : Type*} [Fintype n] [DecidableEq n]
     (A B : Matrix n n ℤ) (h : B * A = 1) : IsUnit A.det := by
@@ -219,7 +219,7 @@ theorem self_dual (x : Fin 8 → ℝ) :
     have hs : (fun j : Fin 8 => ((Pi.single i (1 : ℤ) : Fin 8 → ℤ) j : ℝ)) =
         (Pi.single i (1 : ℝ) : Fin 8 → ℝ) := by
       ext j
-      by_cases hj : j = i <;> simp [Pi.single_apply, hj]
+      by_cases hj : j = i <;> simp [hj]
     rw [hs, realPairing, single_dotProduct, one_mul] at hn
     exact hn
   · rintro ⟨z, hz⟩ w
@@ -283,7 +283,7 @@ def d4Roots (w : Fin 4 → ℤ) : Fin 4 → ℤ :=
 theorem d4_norm_euclidean (w : Fin 4 → ℤ) :
     d4Norm w = ∑ i, (d4Roots w i)^2 := by
   simp [d4Norm, d4Roots, Fin.sum_univ_succ]
-  <;> ring
+  ring
 
 /-- The D4 root lattice is precisely the integer vectors with even coordinate sum. -/
 theorem d4_roots_range (x : Fin 4 → ℤ) :
@@ -292,11 +292,11 @@ theorem d4_roots_range (x : Fin 4 → ℤ) :
   · rintro ⟨w, rfl⟩
     refine ⟨w 3, ?_⟩
     simp [d4Roots, Fin.sum_univ_succ]
-    <;> ring
+    ring
   · rintro ⟨a, ha⟩
     refine ⟨![x 0, x 0 + x 1, a - x 3, a], ?_⟩
     simp [Fin.sum_univ_succ] at ha
     ext i
-    fin_cases i <;> simp [d4Roots] <;> omega
+    fin_cases i <;> simp [d4Roots]; omega
 
 end PMArch.Lattices

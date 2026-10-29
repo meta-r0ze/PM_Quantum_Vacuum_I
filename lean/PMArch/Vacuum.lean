@@ -209,7 +209,7 @@ lemma first_eleven (m : ℕ) (hm : 11 ≤ m) :
   | succ m hm ih =>
     rw [Fin.sum_univ_castSucc]
     simp only [Fin.val_castSucc, Fin.val_last]
-    rw [ih, if_neg (by omega), add_zero]
+    rw [ih, ite_eq_right (by omega), add_zero]
 
 theorem e8_clock : ClockPostulates e8 43 := by
   obtain ⟨h1, h2, h3⟩ := ClockPlane.e8_plane_gram

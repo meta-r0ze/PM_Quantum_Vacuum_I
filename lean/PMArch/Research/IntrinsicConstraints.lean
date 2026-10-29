@@ -104,7 +104,7 @@ theorem odd_lattice_reversible_exchange (x y : ℤ) :
   have he : Even (x*y-x^2*y^2) := by
     convert integer_self_correction_even (x*y) using 1
     ring
-  simp only [OperationalDuality.exchangeSign, if_pos he, one_mul]
+  simp only [OperationalDuality.exchangeSign, ite_eq_left he, one_mul]
   ext t
   simp [shift]
   ring
