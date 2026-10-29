@@ -10,3 +10,8 @@ name = "PMArch"
 [[require]]
 name = "ELEM"
 path = "classification"
+
+# The framework paper's Lean (selection principle), used by `PersistenceMaximin`.
+[[require]]
+name = "pm_framework"
+path = "../../PM/lean"

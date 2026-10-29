@@ -1,5 +1,6 @@
 import PMArch.PersistenceEvents
 import PMArch.TollFilters
+import PMFramework.LawSelection
 
 /-!
 # The uniform measure as the law that persists for every reference
@@ -17,6 +18,13 @@ favours some labels starves the others, and the defects referenced to those fail
 persistence premise is that the law in force is one that no other law beats on this guarantee
 (`Maximin`), the same reading as Capacity, which is the largest allocation the causal bound
 admits.
+
+This premise is the framework's Selection Principle applied to event laws
+(`PMFramework.LawSelection`): among candidate laws with positive initial weight, the surviving
+ensemble concentrates on the law of least long-run cost rate. Scored by the worst-case rate
+`−log min p` or by the average rate `−(1/|Ω|) Σ log p` (a reference that visits every label),
+that law is the uniform law (`selected_uniform_worst`, `selected_uniform_average`), which is
+exactly the maximin law (`maximin_iff_selected`).
 
 * `guaranteed_le`: every law guarantees at most `1/|Ω|`.
 * `maximin_iff`: a law attains that exactly when it is uniform. So the maximin law exists, is
@@ -94,6 +102,20 @@ theorem maximin_product {α β : Type*} [Fintype α] [Nonempty α] [Fintype β] 
     {p : α × β → ℝ} (hp : Maximin p) (a : α) (b : β) :
     p (a, b) = (1 / Fintype.card α) * (1 / Fintype.card β) := by
   rw [(maximin_iff p).mp hp, Fintype.card_prod]; push_cast; ring
+
+/-- **The maximin law is the law that selection keeps.** -/
+theorem maximin_iff_selected (p : Ω → ℝ) : Maximin p ↔ p = PMFramework.LawSelection.uniform := by
+  rw [maximin_iff]
+  constructor
+  · intro h; funext ω; exact h ω
+  · rintro rfl ω; rfl
+
+/-- The selected law minimizes both long-run cost rates, and only it does. -/
+theorem maximin_minimizes_rates {p : Ω → ℝ} (hp : PMFramework.LawSelection.PosLaw p) :
+    Maximin p ↔ PMFramework.LawSelection.averageRate p = Real.log (Fintype.card Ω) ∧
+      PMFramework.LawSelection.worstRate p = Real.log (Fintype.card Ω) := by
+  rw [maximin_iff_selected, PMFramework.LawSelection.averageRate_eq_iff hp,
+    PMFramework.LawSelection.worstRate_eq_iff hp, and_self]
 
 /-! ## The correction terms -/
 

@@ -204,6 +204,8 @@ import PMArch
 #print axioms PMArch.ChannelSymmetry.invariant_uniform
 #print axioms PMArch.PersistenceMaximin.maximin_iff
 #print axioms PMArch.PersistenceMaximin.maximin_product
+#print axioms PMArch.PersistenceMaximin.maximin_iff_selected
+#print axioms PMArch.PersistenceMaximin.maximin_minimizes_rates
 #print axioms PMArch.PersistenceMaximin.toll_maximin
 #print axioms PMArch.PersistenceMaximin.protocol_maximin
 #print axioms PMArch.PersistenceMaximin.margin_maximin
