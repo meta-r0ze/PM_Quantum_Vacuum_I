@@ -3,7 +3,7 @@
   SYSTEM 1: THE INVARIANT SUBSTRATE
 ######################################################################
 
-Characteristic Integers:
+Structural Invariants:
 ----------------------------------------------------------------------
 Delta
   formula = (\Delta)
@@ -77,11 +77,11 @@ AlphaInvGOV
 AlphaInvTOL
   formula = (\frac{\chi \left(RM - \sigma\right)}{N^{3} RM \sigma})
   formula = (5^{-1} \cdot 2 \left(43 \cdot 4\right)^{-1} \left(- 5 + 43 \cdot 4\right) \left(2 \cdot 16\right)^{-3})
-  value = 1.185217569041e-05
+  value = 1.185217569041e-5
 AlphaInvMAR
   formula = (\frac{1}{\Delta^{2} L_{embed} \left(\sigma + 1\right)})
   formula = (\left(1 + 5\right)^{-1} \left(2 + 2 \cdot 4 + 5 + 16\right)^{-1} \cdot 43^{-2})
-  value = 2.907703670104e-06
+  value = 2.907703670104e-6
 ----------------------------------------------------------------------
 
 alpha^-1:
@@ -92,12 +92,12 @@ alpha^-1
   value = 137.035999212
   [Exp alpha_inv_codata] Citation     : mohr_codata_2025
   [Exp alpha_inv_codata] Value        : 137.035999177 ± 0.000000021
-  [Exp alpha_inv_codata] Difference   : +3.538139e-8
+  [Exp alpha_inv_codata] Difference   : +3.538140e-8
   [Exp alpha_inv_codata] Discrepancy  : +1.68 σ
 
   [Exp alpha_inv_morel] Citation     : morel_determination_2020
   [Exp alpha_inv_morel] Value        : 137.035999206 ± 0.000000011
-  [Exp alpha_inv_morel] Difference   : +6.381384e-9
+  [Exp alpha_inv_morel] Difference   : +6.381397e-9
   [Exp alpha_inv_morel] Discrepancy  : +0.58 σ
 
   [Exp alpha_inv_parker] Citation     : parker_measurement_2018
@@ -107,7 +107,7 @@ alpha^-1
 
   [Exp alpha_inv_fan] Citation     : fan_measurement_2023
   [Exp alpha_inv_fan] Value        : 137.035999166 ± 0.000000015
-  [Exp alpha_inv_fan] Difference   : +4.638139e-8
+  [Exp alpha_inv_fan] Difference   : +4.638140e-8
   [Exp alpha_inv_fan] Discrepancy  : +3.09 σ
 
 alpha
@@ -119,12 +119,12 @@ alpha
 Von Klitzing Constant:
 ----------------------------------------------------------------------
 SpeedOfLight
-  formula = (29.9792458)
-  formula = (29.9792458)
+  formula = (\frac{149896229}{5000000})
+  formula = (\frac{149896229}{5000000})
   value = 29.9792458
 VonKlitzing
   formula = (\frac{2 \pi SpeedOfLight}{\alpha})
-  formula = (2 \pi \left(\left(2 + \pi 43 + - 2 \cdot 43^{-1} + \left(1 + 5\right)^{-1} \left(2 + 2 \cdot 4 + 5 + 16\right)^{-1} \cdot 43^{-2} + 5^{-1} \cdot 2 \left(43 \cdot 4\right)^{-1} \left(- 5 + 43 \cdot 4\right) \left(2 \cdot 16\right)^{-3} + - \left(- 5 + 43 \cdot 4\right)^{-1}\right)^{-1}\right)^{-1} \cdot 29.9792458)
+  formula = (2 \pi \left(\left(2 + \pi 43 + - 2 \cdot 43^{-1} + \left(1 + 5\right)^{-1} \left(2 + 2 \cdot 4 + 5 + 16\right)^{-1} \cdot 43^{-2} + 5^{-1} \cdot 2 \left(43 \cdot 4\right)^{-1} \left(- 5 + 43 \cdot 4\right) \left(2 \cdot 16\right)^{-3} + - \left(- 5 + 43 \cdot 4\right)^{-1}\right)^{-1}\right)^{-1} \cdot \frac{149896229}{5000000})
   value = 25812.80747\Omega
   [Exp rk] Citation     : mohr_codata_2025
   [Exp rk] Value        : 25812.80745 ± 0.00001\Omega
@@ -151,31 +151,52 @@ PlanckChargeAttenuation
 
 
 ######################################################################
-  SYSTEM IV: THE GEOMETRIC CONTROL ARCHITECTURE
+  SYSTEM 4: GAUGE PARTITION
 ######################################################################
 
---- Strong Coupling (alpha_s) at M_Z ---
-Formula:  (nu*eta + 1/D) / alpha_inv
-Filled:   (16 * 0.9942 + 0.25) / 137.0360
-Calculated: 0.117903155646 
-Target:     0.1179 +/- 0.0009 
-Deviation:  +0.00σ  [OK]
+Gauge Partition:
+----------------------------------------------------------------------
+eta
+  formula = (1 - \frac{1}{D \Delta})
+  formula = (1 - 43^{-1} \cdot 4^{-1})
+  value = 0.994186046512
+alpha_s
+  formula = (\frac{D \Delta + \eta \nu + \sigma}{12 \alpha^{-1} \eta})
+  formula = (\frac{\left(1 - 43^{-1} \cdot 4^{-1}\right)^{-1} \left(2 + \pi 43 + - 2 \cdot 43^{-1} + \left(1 + 5\right)^{-1} \left(2 + 2 \cdot 4 + 5 + 16\right)^{-1} \cdot 43^{-2} + 5^{-1} \cdot 2 \left(43 \cdot 4\right)^{-1} \left(- 5 + 43 \cdot 4\right) \left(2 \cdot 16\right)^{-3} + - \left(- 5 + 43 \cdot 4\right)^{-1}\right)^{-1} \left(5 + 16 \left(1 - 43^{-1} \cdot 4^{-1}\right) + 43 \cdot 4\right)}{12})
+  value = 0.118
+  [Exp alpha_s] Citation     : denterria_strong_2024
+  [Exp alpha_s] Value        : 0.1179 ± 0.0009
+  [Exp alpha_s] Difference   : +9.520371e-5
+  [Exp alpha_s] Discrepancy  : +0.11 σ
+
+beta_0
+  formula = (11 - 3 \cdot \frac{2}{3})
+  formula = (11 - 3 \cdot \frac{2}{3})
+  value = 9
+----------------------------------------------------------------------
 
 --- Alpha_s at Tau (Linear 1-Loop) ---
 Formula:  1-Loop Geometric
-Filled:   0.3520
-Calculated: 0.352030150928 
+Filled:   0.3529
+Calculated: 0.352852010004 
 
 --- Alpha_s at Tau (Corrected) ---
 Formula:  Linear * (nu-1)/nu
-Filled:   0.3520 * 15/16
-Calculated: 0.330028266495 
+Filled:   0.3529 * 15/16
+Calculated: 0.330798759379 
 Target:     0.33 +/- 0.014 
-Deviation:  +0.00σ  [OK]
+Deviation:  +0.06σ  [OK]
+
+--- Alpha_s at Tau (1-loop, Paper V flavour thresholds) ---
+Formula:  1-loop, nf=5 above m_b, nf=4 below
+Filled:   0.2794
+Calculated: 0.279413431946 
+Target:     0.33 +/- 0.014 
+Deviation:  -3.61σ  [WARNING: >3σ deviation]
 
 --- Alpha Inv at Z-Pole (Corrected) ---
 Formula:  alpha_inv - Fog - eta
-Filled:   137.0360 - 8.085123953530504 - 0.9942
+Filled:   137.0360 - 8.08512395353 - 0.9942
 Calculated: 127.956689212 
 Target:     127.955 +/- 0.01 
 Deviation:  +0.17σ  [OK]
@@ -184,35 +205,35 @@ Deviation:  +0.17σ  [OK]
 Formula:  Delta / (D*Delta + (ν * COORDINATE_OVERHEAD) + σ)
 Filled:   43 / 192.9070
 Calculated: 0.222905364678 
-Target:     0.22291 +/- 0.00011 
-Deviation:  -0.04σ  [OK]
+Target:     0.2232 +/- 0.00026 
+Deviation:  -1.13σ  [OK]
 
 --- Weak Mixing Angle (sin^2 theta_W) ---
 Formula:  Delta / (D*Delta + (ν * COORDINATE_OVERHEAD) + σ)
 Filled:   43 / 192.9070
 Calculated: 0.222905364678 
-Target:     0.22354 +/- 6e-05 
+Target:     0.22354 +/- 0.00006 
 Deviation:  -10.58σ  [WARNING: >3σ deviation]
 
 --- Weak Mixing Angle (sin^2 theta_W) ---
 Formula:  Delta / (D*Delta + (ν * COORDINATE_OVERHEAD) + σ)
 Filled:   43 / 192.9070
-Calculated: 1.18700125767e-05 
-Target:     0.22291 +/- 0.00011 
-Deviation:  -2026.35σ  [WARNING: >3σ deviation]
+Calculated: 0.0000118700125767 
+Target:     0.2232 +/- 0.00026 
+Deviation:  -858.42σ  [WARNING: >3σ deviation]
 
 --- Higgs VEV (v) ---
 Formula:  v_tree * (1 + α/D_eff) * (1 - PM/3)
 Filled:   245.789 * 1.001755 * 0.99999903
 Calculated: 246.219637823 GeV
-Target:     246.21965 +/- 6e-05 GeV
+Target:     246.21965 +/- 0.00006 GeV
 Deviation:  -0.20σ  [OK]
 
 --- Fermi Constant (G_F) ---
 Formula:  1 / (√χ * v_phys²)
 Filled:   1 / (√2 * 246.22²)
-Calculated: 1.1663788229e-05 GeV^-2
-Target:     1.1663788e-05 +/- 6e-12 GeV^-2
+Calculated: 0.0000116637882290 GeV^-2
+Target:     0.000011663788 +/- 6e-12 GeV^-2
 Deviation:  +0.04σ  [OK]
 
 --- Higgs Self-Coupling (λ) ---
@@ -225,30 +246,95 @@ Deviation:  +0.08σ  [OK]
 --- Higgs Mass (m_H) ---
 Formula:  √(2λ) * v
 Filled:   √(2 * 0.1294) * 246.22
-Calculated: 125.26926377 GeV
+Calculated: 125.269263770 GeV
 Target:     125.2 +/- 0.11 GeV
 Deviation:  +0.63σ  [OK]
 
---- Electron Yukawa (y_e) [Geometric] ---
-Formula:  PM * (1 + (σ/D)α)
-Filled:   2.9077e-06 * (1 + 1.25*0.0073)
-Calculated: 2.93422684364e-06 
-Target:     2.935e-06 +/- 1e-09 
-Deviation:  -0.77σ  [OK]
+--- Electron Yukawa (y_e) [mass law from v] ---
+Formula:  sqrt(2) * m_e / v
+Filled:   sqrt(2) * m_e / 246.219637823
+Calculated: 0.00000293502846418 
+Target:     0.0000029350284 +/- 7e-13 
+Deviation:  +0.09σ  [OK]
 
---- Jarlskog Invariant (J) ---
+--- Electron closure coefficient c in y_e = PM(1 + c alpha) ---
+Formula:  (y_e/PM - 1)/alpha
+Filled:   (0.00000293502846418/0.00000290770367010 - 1)/0.00729735256245
+Calculated: 1.28777925261 
+
+--- Electron Yukawa, sigma/D dressing [excluded by closure] ---
+Formula:  PM * (1 + (σ/D)α)
+Filled:   2.9077e-6 * (1 + 1.25*0.0073)
+Calculated: 0.00000293422684364 
+Target:     0.0000029350284 +/- 7e-13 
+Deviation:  -1145.08σ  [WARNING: >3σ deviation]
+
+--- W mass from the uncorrected common-scale response ---
+Formula:  sqrt(g^2) * v / 2 (no measured M_Z input)
+Filled:   sqrt(0.411390891987) * 246.219637823 / 2
+Calculated: 78.9623434131 GeV
+Target:     80.3692 +/- 0.013 GeV
+Deviation:  -105.78σ  [WARNING: >3σ deviation]
+
+--- Z mass from the uncorrected common-scale response ---
+Formula:  sqrt(g^2 + g'^2) * v / 2
+Filled:   sqrt(0.529396129232) * 246.219637823 / 2
+Calculated: 89.5742278760 GeV
+Target:     91.1876 +/- 0.0021 GeV
+Deviation:  -768.27σ  [WARNING: >3σ deviation]
+
+--- Electron mass closure ratio ---
+Formula:  y_e * v / (sqrt(2) * m_e)
+Filled:   0.00000293422684364 * 246.219637823 / (sqrt(2) * m_e)
+Calculated: 0.999726878104 
+
+--- Interface factor k needed by the Z anchor ---
+Formula:  (M_Z / M_Z^response)^2
+Filled:   (91.1876 / 89.5742278760)^2
+Calculated: 1.03634754866 
+
+--- Strong readout with the same interface factor ---
+Formula:  k * alpha_s
+Filled:   1.03634754866 * 0.117995203714
+Calculated: 0.122284040123 
+Target:     0.1179 +/- 0.0009 
+Deviation:  +4.87σ  [WARNING: >3σ deviation]
+
+--- Radiative correction implied by the on-shell mixing and Z anchor ---
+Formula:  1 - 1/k
+Filled:   1 - 1/1.036347549
+Calculated: 0.0350727405193 
+
+--- Interface factor if the Z-pole coupling were used ---
+Formula:  alpha_inv / alpha_inv(M_Z)
+Filled:   137.0359992 / 127.9566892
+Calculated: 1.07095611848 
+
+--- Required anti-screening term X in 1/k = 1 - delta_alpha + X ---
+Formula:  1/k - 1 + delta_alpha
+Filled:   1/1.036347549 - 1 + 0.059
+Calculated: 0.0239272594807 
+
+--- Jarlskog Invariant (J) from the derived CKM matrix ---
+Formula:  c12 s12 c23 s23 c13^2 s13 sin(delta)
+Filled:   s12=0.224399, s23=0.041308, s13=3.607327e-3, sin(delta)=0.928477
+Calculated: 0.0000302287044326 
+Target:     0.0000308 +/- 0.0000015 
+Deviation:  -0.38σ  [OK]
+
+--- Geometric Jarlskog estimate (superseded by the matrix value) ---
 Formula:  phi^2 * T_geo * eta
-Filled:   1.6180^2 * 1.1852e-05
-Calculated: 3.08489953167e-05 
-Target:     3.08e-05 +/- 1.5e-06 
+Filled:   1.6180^2 * 1.1852e-5 * eta
+Calculated: 0.0000308489953167 
+Target:     0.0000308 +/- 0.0000015 
 Deviation:  +0.03σ  [OK]
 
---- W Boson Mass (M_W) ---
+--- W Boson Mass (uses measured M_Z) ---
 Formula:  M_Z * sqrt(1 - sin2_theta_w)
 Filled:   91.1876 * sqrt(1 - 0.2229)
 Calculated: 80.3845788789 GeV
-Target:     80.377 +/- 0.012 GeV
-Deviation:  +0.63σ  [OK]
+Target:     80.3692 +/- 0.013 GeV
+Deviation:  +1.16σ  [OK]
 
 --- Cabibbo Angle (|V_us|) ---
 Formula:  pi / (nu - chi)
@@ -264,7 +350,7 @@ Deviation:  -0.90σ  [OK]
 
 --- Residual Capacity (B_res) ---
 Formula:  ν - χ/(σ-χ) - α
-Filled:   16 - 0.6667 - 7.2974e-03
+Filled:   16 - 0.6667 - 7.2974e-3
 Calculated: 15.3260359808 
 
 --- Boundary Storage ---
@@ -280,7 +366,7 @@ Calculated: 0.00729735256245
 --- Total Bandwidth Sum ---
 Formula:  B_res + Boundary + Gauge
 Filled:   15.3260 + 0.6667 + 0.0073
-Calculated: 16 
+Calculated: 16.0000000000 
 
 --- Gravitational Coupling (α_G) ---
 Formula:  B_res * α^(Δ/2)
@@ -293,7 +379,7 @@ Deviation:  -0.20σ  [OK]
 Formula:  m_e / √α_G
 Filled:   m_e / √1.7518e-45
 Calculated: 1.22089354884e+19 GeV
-Target:     1.22091e+19 +/- 1e+14 GeV
+Target:     1.22091e+19 +/- 1.0e+14 GeV
 Deviation:  -1.65σ  [OK]
 
 --- Higgs Impedance (Z_H) ---
@@ -308,7 +394,7 @@ Calculated: 5.96511627907
 
 --- Vacuum Energy Scaling (rho_vac / M_P^4) ---
 Formula:  (alpha/2) * (M_min / M_P)^4
-Filled:   (0.0073/2) * (9.2089e-09/1.2209e+22)^4
+Filled:   (0.0073/2) * (9.2089e-9/1.2209e+22)^4
 Calculated: 1.18103720379e-123 
 Target:     1.38e-123 +/- 2e-124 
 Deviation:  -0.99σ  [OK]
@@ -317,7 +403,7 @@ Deviation:  -0.99σ  [OK]
 Formula:  sigma - chi
 Filled:   5 - 2
 Calculated: 3 
-Target:     3 +/- 0 
+Target:     3.0 +/- 0.0 
 Error:      0.000000% (No Sigma avail)
 
 --- Weinberg Angle (GUT) ---
@@ -325,7 +411,7 @@ Formula:  \frac{N_c}{2D}
 Filled:   3/8
 Calculated: 0.375 
 
-  Physical Wavelength (lambda_min): 134634549.48 micrometers
+  Physical Wavelength (lambda_min): 134.63 micrometers
 ------------------------------------------------------------
 
 
@@ -333,18 +419,18 @@ Calculated: 0.375
                    GLOBAL GEOMETRIC AUDIT                   
 ============================================================
 [G_Fermi]
-  Experimental: 1.166378800e-05 +/- 6.0e-12
-  Geometric:    1.166378823e-05
+  Experimental: 1.166378800e-5 +/- 6.0e-12
+  Geometric:    1.166378823e-5
   Citation:     GeV^-2 (navas_review_2024)
   Deviation:    +0.04 sigma
   Chi^2:        0.0015
 ------------------------------------------------------------
 [Alpha Strong]
   Experimental: 0.117900000 +/- 0.00090000
-  Geometric:    0.117903156
+  Geometric:    0.117995204
   Citation:            (denterria_strong_2024)
-  Deviation:    +0.00 sigma
-  Chi^2:        0.0000
+  Deviation:    +0.11 sigma
+  Chi^2:        0.0112
 ------------------------------------------------------------
 [Mass Higgs]
   Experimental: 125.200000000 +/- 0.11000000
@@ -354,9 +440,9 @@ Calculated: 0.375
   Chi^2:        0.3965
 ------------------------------------------------------------
 ============================================================
-TOTAL CHI^2:   0.3980
+TOTAL CHI^2:   0.4091
 DOF:           3
-REDUCED CHI^2: 0.1327
+REDUCED CHI^2: 0.1364
 >>> STATUS: VALIDATED (Theory matches Experiment)
 ============================================================
 
@@ -365,11 +451,11 @@ REDUCED CHI^2: 0.1327
                    GLOBAL GEOMETRIC AUDIT                   
 ============================================================
 [Sin^2 ThetaW]
-  Experimental: 0.222910000 +/- 0.00011000
+  Experimental: 0.223200000 +/- 0.00026000
   Geometric:    0.222905365
   Citation:            (navas_review_2024)
-  Deviation:    -0.04 sigma
-  Chi^2:        0.0018
+  Deviation:    -1.13 sigma
+  Chi^2:        1.2842
 ------------------------------------------------------------
 [Cabibbo Vus]
   Experimental: 0.225000000 +/- 0.00067000
@@ -379,11 +465,11 @@ REDUCED CHI^2: 0.1327
   Chi^2:        0.8034
 ------------------------------------------------------------
 [Jarlskog J]
-  Experimental: 3.080000000e-05 +/- 1.5e-06
-  Geometric:    3.084899532e-05
+  Experimental: 3.080000000e-5 +/- 1.5e-6
+  Geometric:    3.022870443e-5
   Citation:            (navas_review_2024)
-  Deviation:    +0.03 sigma
-  Chi^2:        0.0011
+  Deviation:    -0.38 sigma
+  Chi^2:        0.1451
 ------------------------------------------------------------
 [Planck Mass]
   Experimental: 1.220910000e+19 +/- 1.0e+14
@@ -393,16 +479,16 @@ REDUCED CHI^2: 0.1327
   Chi^2:        2.7064
 ------------------------------------------------------------
 [Von Klitzing Const]
-  Experimental: 2.581280745e+04 +/- 1.0e-05
-  Geometric:    2.581280747e+04
+  Experimental: 2.581280745e+4 +/- 1.0e-5
+  Geometric:    2.581280747e+4
   Citation:     \Omega (mohr_codata_2025)
   Deviation:    +1.94 sigma
   Chi^2:        3.7689
 ------------------------------------------------------------
 ============================================================
-TOTAL CHI^2:   7.2815
+TOTAL CHI^2:   8.7079
 DOF:           5
-REDUCED CHI^2: 1.4563
+REDUCED CHI^2: 1.7416
 >>> STATUS: VALIDATED (Theory matches Experiment)
 ============================================================
 
@@ -411,18 +497,18 @@ REDUCED CHI^2: 1.4563
                    GLOBAL GEOMETRIC AUDIT                   
 ============================================================
 [G_Fermi]
-  Experimental: 1.166378800e-05 +/- 6.0e-12
-  Geometric:    1.166378823e-05
+  Experimental: 1.166378800e-5 +/- 6.0e-12
+  Geometric:    1.166378823e-5
   Citation:     GeV^-2 (navas_review_2024)
   Deviation:    +0.04 sigma
   Chi^2:        0.0015
 ------------------------------------------------------------
 [Alpha Strong]
   Experimental: 0.117900000 +/- 0.00090000
-  Geometric:    0.117903156
+  Geometric:    0.117995204
   Citation:            (denterria_strong_2024)
-  Deviation:    +0.00 sigma
-  Chi^2:        0.0000
+  Deviation:    +0.11 sigma
+  Chi^2:        0.0112
 ------------------------------------------------------------
 [Mass Higgs]
   Experimental: 125.200000000 +/- 0.11000000
@@ -432,11 +518,11 @@ REDUCED CHI^2: 1.4563
   Chi^2:        0.3965
 ------------------------------------------------------------
 [Sin^2 ThetaW]
-  Experimental: 0.222910000 +/- 0.00011000
+  Experimental: 0.223200000 +/- 0.00026000
   Geometric:    0.222905365
   Citation:            (navas_review_2024)
-  Deviation:    -0.04 sigma
-  Chi^2:        0.0018
+  Deviation:    -1.13 sigma
+  Chi^2:        1.2842
 ------------------------------------------------------------
 [Cabibbo Vus]
   Experimental: 0.225000000 +/- 0.00067000
@@ -446,11 +532,11 @@ REDUCED CHI^2: 1.4563
   Chi^2:        0.8034
 ------------------------------------------------------------
 [Jarlskog J]
-  Experimental: 3.080000000e-05 +/- 1.5e-06
-  Geometric:    3.084899532e-05
+  Experimental: 3.080000000e-5 +/- 1.5e-6
+  Geometric:    3.022870443e-5
   Citation:            (navas_review_2024)
-  Deviation:    +0.03 sigma
-  Chi^2:        0.0011
+  Deviation:    -0.38 sigma
+  Chi^2:        0.1451
 ------------------------------------------------------------
 [Planck Mass]
   Experimental: 1.220910000e+19 +/- 1.0e+14
@@ -460,16 +546,16 @@ REDUCED CHI^2: 1.4563
   Chi^2:        2.7064
 ------------------------------------------------------------
 [Von Klitzing Const]
-  Experimental: 2.581280745e+04 +/- 1.0e-05
-  Geometric:    2.581280747e+04
+  Experimental: 2.581280745e+4 +/- 1.0e-5
+  Geometric:    2.581280747e+4
   Citation:     \Omega (mohr_codata_2025)
   Deviation:    +1.94 sigma
   Chi^2:        3.7689
 ------------------------------------------------------------
 ============================================================
-TOTAL CHI^2:   7.6795
+TOTAL CHI^2:   9.1170
 DOF:           8
-REDUCED CHI^2: 0.9599
+REDUCED CHI^2: 1.1396
 >>> STATUS: VALIDATED (Theory matches Experiment)
 ============================================================
 

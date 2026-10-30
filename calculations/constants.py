@@ -635,15 +635,39 @@ def main(argv=None):
     )
 
     # --- Jarlskog Invariant (Time Asymmetry) ---
+    # J is fixed by the mixing matrix: Paper IV's four derived parameters in the standard
+    # parametrization (Lean: PMDynamics.CKM.pm_jarlskog_matrix). The earlier geometric
+    # estimate phi^2 * T_geo * eta differs by about 2% and is exported separately as
+    # JarlskogGeo (Lean: PMDynamics.JarlskogReview).
     PHI = (1 + decimal_sqrt(5)) / 2
     J_GEO = pow(PHI, 2) * AlphaInv_TOL * COORDINATE_OVERHEAD
+    S12_CKM = PI / (NU - CHI)
+    S13_CKM = 1 / (CHI * ALPHA_INV_GEO + PI)
+    VCB_CKM = (PI + CHI) / (ALPHA_INV_GEO - D * PI)
+    C13_CKM = decimal_sqrt(1 - S13_CKM ** 2)
+    S23_CKM = VCB_CKM / C13_CKM
+    C23_CKM = decimal_sqrt(1 - S23_CKM ** 2)
+    C12_CKM = decimal_sqrt(1 - S12_CKM ** 2)
+    SIN_DELTA_CKM = SIGMA / decimal_sqrt(SIGMA ** 2 + CHI ** 2)
+    J_CKM = C12_CKM * S12_CKM * C23_CKM * S23_CKM * C13_CKM ** 2 * S13_CKM * SIN_DELTA_CKM
 
     print_derivation(
-        name="Jarlskog Invariant (J)",
+        name="Jarlskog Invariant (J) from the derived CKM matrix",
         tag="Jarlskog",
+        formula_sym="c12 s12 c23 s23 c13^2 s13 sin(delta)",
+        latex_sym=r"c_{12}s_{12}c_{23}s_{23}c_{13}^2s_{13}\sin\delta",
+        formula_num=f"s12={S12_CKM:.6f}, s23={S23_CKM:.6f}, s13={S13_CKM:.6e}, sin(delta)={SIN_DELTA_CKM:.6f}",
+        result=J_CKM,
+        latex_mode=LATEX_MODE,
+        ref_key="jarlskog",
+        context="CP violation parameter"
+    )
+    print_derivation(
+        name="Geometric Jarlskog estimate (superseded by the matrix value)",
+        tag="JarlskogGeo",
         formula_sym="phi^2 * T_geo * eta",
         latex_sym=r"\phi^2 \cdot T_{geo} \cdot \eta",
-        formula_num=f"{PHI:.4f}^2 * {AlphaInv_TOL:.4e}",
+        formula_num=f"{PHI:.4f}^2 * {AlphaInv_TOL:.4e} * eta",
         result=J_GEO,
         latex_mode=LATEX_MODE,
         ref_key="jarlskog",
@@ -891,7 +915,7 @@ def main(argv=None):
     RESULTS["VonKlitzing"] = RK_GEO
     RESULTS["WeakAngle"] = SIN2_THETA_W_GEO
     RESULTS["CabibboAngle"] = SIN_THETA_C_GEO
-    RESULTS["Jarlskog"] = J_GEO
+    RESULTS["Jarlskog"] = J_CKM
     RESULTS["PlanckMass"] = MP_GEV_GEO
     run_global_audit(RESULTS, REFS, LATEX_MODE)
     RESULTS.update(Alpha=ALPHA_GEO, HiggsLambda=LAMBDA_GEO,
@@ -909,7 +933,7 @@ def main(argv=None):
                    StrongCouplingSquared=STRONG_SQUARED,
                    WMassFromResponse=MW_RESPONSE, ZMassFromResponse=MZ_RESPONSE,
                    WMassFromMeasuredZ=MW_GEO, ElectronClosureRatio=ELECTRON_CLOSURE,
-                   SurfaceReflectionFraction=SURFACE_REFLECTION)
+                   SurfaceReflectionFraction=SURFACE_REFLECTION, JarlskogGeo=J_GEO)
     with localcontext() as ctx:
         ctx.prec = args.digits
         return {name: +value for name, value in RESULTS.items()}
