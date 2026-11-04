@@ -1,4 +1,4 @@
-# PM-1-Arch: Lean formalization
+# PMSubstrate — overview of checked results
 
 Lean 4 proofs for *Persistence Mechanics of the Quantum Vacuum I: The E8 Substrate and the
 Fine-Structure Constant*.
@@ -53,11 +53,10 @@ coordinating other transitions, subtract (`NetCost.removal_subtracts`, `NetIndex
 | Margin | 1/(31·6·43²) | one configuration among description × local tree × causal cone | `FinalPremises.description_minimal`, `ImpedanceTerms.tree_vertices`, `PersistencePremises.causal_cone_card` |
 
 Uniform measures come from Closure (`ClosureSymmetry.invariant_measure_uniform`).
-`docs/derivation-log.md` records how each choice was replaced by a theorem.
 
 **Not derived inside Lean:** the postulates above, and PM's definitions of the pillars (Governor
 restricts transitions, Protocol coordinates them; a vertex sees only local observations, which is
-Postulate I).
+Postulate I). See [`REVIEW-AND-NEXT.md`](REVIEW-AND-NEXT.md) for the missing implications.
 
 ## Layout
 
@@ -71,9 +70,8 @@ Postulate I).
 | `PMSubstrate/DerivedParameters`, `E8Invariants`, `CapacityBarbier`, `CapacityEnvelope`, `CauchyPolygon`, `CircleLength`, `Distinctions`, `Descartes`, `TollFilters`, `ClosureSymmetry`, `PersistenceEvents`, `PersistenceMaximin`, `PersistencePremises`, `FinalPremises`, `NetCost`, `NetIndex`, `Impedance*`, `ProtocolToll` | parameters and the six terms |
 | `PMSubstrate/Pillars`, `Comparison`, `PhysicalBridge` | PM failure modes, comparison with measurement, earlier bridge lemmas |
 | `PMSubstrate/Research/` | alternative routes, counterexamples and necessity tests (not on the main path) |
-| `classification/` | vendored class-number-one proof (Peter W. Murphy, Apache-2.0) |
-| `audits/` | scoped axiom audits for the research modules |
-| `docs/` | derivation log; `docs/research/` holds earlier investigation notes |
+| `../classification/` | vendored class-number-one proof (Peter W. Murphy, Apache-2.0) |
+| `../audits/` | scoped axiom audits for the research modules |
 
 ## Build and audit
 
@@ -88,10 +86,10 @@ lake exe cache get
 `check.sh` runs `lake build`, the strict audit (`AuditStrict.lean`: every PMSubstrate declaration may
 depend only on `propext`, `Classical.choice`, `Quot.sound`), the readable `Audit.lean`, and the
 class-number audit. `audit-negative-tests.sh` checks that the strict audit rejects `sorry` and new
-axioms. Last full run (2026-10-27): 1236 declarations passed.
+axioms. Run `./check.sh` for current counts.
 
 ## Credits
 
-The class-number-one classification in `classification/` is Peter W. Murphy's formalization
+The class-number-one classification in `../classification/` is Peter W. Murphy's formalization
 (https://github.com/DrMurphyIsIn/tenth-discriminant), vendored unmodified; see its NOTICE and
 PROVENANCE. Built on mathlib.
