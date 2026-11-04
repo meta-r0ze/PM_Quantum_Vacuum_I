@@ -1,7 +1,7 @@
 # Imaginary-quadratic class-number-one classification
 
 A Lean 4.34.1 project: the `ELEM` and `CN1` sources are vendored unmodified (see PROVENANCE.md);
-`Classification.lean` is added here. The main PMArch project uses the same Lean version and depends
+`Classification.lean` is added here. The main PMSubstrate project uses the same Lean version and depends
 on this directory as the local Lake package `ELEM`.
 
 `ELEM/Main.lean` proves `CN1.classNumber_eq_one_iff` for actual Mathlib number

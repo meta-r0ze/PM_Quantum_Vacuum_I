@@ -5,7 +5,7 @@ Fine-Structure Constant*.
 
 ## Main result
 
-`PMArch.Main.persistence_selects` (`PMArch/MainTheorem.lean`): from the postulates below,
+`PMSubstrate.Main.persistence_selects` (`PMSubstrate/MainTheorem.lean`): from the postulates below,
 
 * the substrate lattice is **E8**, containing two orthogonal **D4** sectors;
 * the clock period is **Δ = 43**;
@@ -15,9 +15,9 @@ Fine-Structure Constant*.
   Z = 43π + 2 + 334/(32³·5·172) + 1/(31·6·43²) − 1/167 − 2/43,
   with 137.035999212381397211 < Z < 137.035999212381397213.
 
-`PMArch.Main.postulates_satisfiable`: E8 with the 43-cycle, one time direction and the sphere
+`PMSubstrate.Main.postulates_satisfiable`: E8 with the 43-cycle, one time direction and the sphere
 satisfies every postulate, so the set is consistent. Comparison with measured α is separate
-(`PMArch.alpha_deviations`) and is not part of the theorem.
+(`PMSubstrate.alpha_deviations`) and is not part of the theorem.
 
 ## Postulates
 
@@ -63,14 +63,14 @@ Postulate I).
 
 | Path | Contents |
 |---|---|
-| `PMArch/MainTheorem.lean` | main theorem and satisfiability |
-| `PMArch/Vacuum.lean`, `VacuumIndependence.lean` | postulates, E8 and clock selection, independence |
-| `PMArch/Lattices`, `RankEight`, `ThetaE8`, `E8Unique`, `Translation*`, `Postulates`, `ClaimBoundary` | lattice classification: theta series, rank divisible by 8, uniqueness of E8 |
-| `PMArch/Clock`, `ClockPlane`, `DiscriminantGroup`, `Scheduling`, `Selection`, `ClassNumber`, `ScheduleReconstruction`, `ScheduleReconstructionField` | clock, schedule window (the no-adjacent-idle hypothesis of the older route is discharged from gap-only reconstruction in `ScheduleReconstruction`), class number one |
-| `PMArch/SelfReadable`, `Parity`, `OrthogonalExchange`, `Sectors`, `Channels`, `ChannelSymmetry` | unimodularity, evenness, sectors, channels; the uniform channel measure from E8 symmetry |
-| `PMArch/DerivedParameters`, `E8Invariants`, `CapacityBarbier`, `CapacityEnvelope`, `CauchyPolygon`, `CircleLength`, `Distinctions`, `Descartes`, `TollFilters`, `ClosureSymmetry`, `PersistenceEvents`, `PersistenceMaximin`, `PersistencePremises`, `FinalPremises`, `NetCost`, `NetIndex`, `Impedance*`, `ProtocolToll` | parameters and the six terms |
-| `PMArch/Pillars`, `Comparison`, `PhysicalBridge` | PM failure modes, comparison with measurement, earlier bridge lemmas |
-| `PMArch/Research/` | alternative routes, counterexamples and necessity tests (not on the main path) |
+| `PMSubstrate/MainTheorem.lean` | main theorem and satisfiability |
+| `PMSubstrate/Vacuum.lean`, `VacuumIndependence.lean` | postulates, E8 and clock selection, independence |
+| `PMSubstrate/Lattices`, `RankEight`, `ThetaE8`, `E8Unique`, `Translation*`, `Postulates`, `ClaimBoundary` | lattice classification: theta series, rank divisible by 8, uniqueness of E8 |
+| `PMSubstrate/Clock`, `ClockPlane`, `DiscriminantGroup`, `Scheduling`, `Selection`, `ClassNumber`, `ScheduleReconstruction`, `ScheduleReconstructionField` | clock, schedule window (the no-adjacent-idle hypothesis of the older route is discharged from gap-only reconstruction in `ScheduleReconstruction`), class number one |
+| `PMSubstrate/SelfReadable`, `Parity`, `OrthogonalExchange`, `Sectors`, `Channels`, `ChannelSymmetry` | unimodularity, evenness, sectors, channels; the uniform channel measure from E8 symmetry |
+| `PMSubstrate/DerivedParameters`, `E8Invariants`, `CapacityBarbier`, `CapacityEnvelope`, `CauchyPolygon`, `CircleLength`, `Distinctions`, `Descartes`, `TollFilters`, `ClosureSymmetry`, `PersistenceEvents`, `PersistenceMaximin`, `PersistencePremises`, `FinalPremises`, `NetCost`, `NetIndex`, `Impedance*`, `ProtocolToll` | parameters and the six terms |
+| `PMSubstrate/Pillars`, `Comparison`, `PhysicalBridge` | PM failure modes, comparison with measurement, earlier bridge lemmas |
+| `PMSubstrate/Research/` | alternative routes, counterexamples and necessity tests (not on the main path) |
 | `classification/` | vendored class-number-one proof (Peter W. Murphy, Apache-2.0) |
 | `audits/` | scoped axiom audits for the research modules |
 | `docs/` | derivation log; `docs/research/` holds earlier investigation notes |
@@ -85,7 +85,7 @@ lake exe cache get
 ./check.sh
 ```
 
-`check.sh` runs `lake build`, the strict audit (`AuditStrict.lean`: every PMArch declaration may
+`check.sh` runs `lake build`, the strict audit (`AuditStrict.lean`: every PMSubstrate declaration may
 depend only on `propext`, `Classical.choice`, `Quot.sound`), the readable `Audit.lean`, and the
 class-number audit. `audit-negative-tests.sh` checks that the strict audit rejects `sorry` and new
 axioms. Last full run (2026-10-27): 1236 declarations passed.
