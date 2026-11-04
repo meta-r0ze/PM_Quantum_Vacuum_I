@@ -1,7 +1,7 @@
 import ELEM.Main
 import CN1.Foundations.Discr
 
-namespace PMArchClassification
+namespace PMSubstrateClassification
 
 /-- Absolute-discriminant arithmetic for a squarefree imaginary quadratic radicand.
 The identification with the field discriminant is proved below. -/
@@ -43,4 +43,4 @@ theorem actual_discriminant_window (K : Type*) [Field K] [NumberField K]
   rw [abs_discriminant_eq K hK m hm hsq] at hlo hhi ⊢
   exact class_one_window K hK m hm hsq hc hlo hhi
 
-end PMArchClassification
+end PMSubstrateClassification

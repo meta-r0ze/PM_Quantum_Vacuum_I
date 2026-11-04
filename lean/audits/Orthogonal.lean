@@ -1,4 +1,4 @@
-import PMArch.OrthogonalExchange
+import PMSubstrate.OrthogonalExchange
 import Lean
 
 -- Audit all declarations from the new module, including generated helpers,
@@ -10,9 +10,9 @@ run_cmd do
   let mut checked : Nat := 0
   for (name, _) in env.constants.toList do
     let fromModule := match env.getModuleIdxFor? name with
-      | some idx => env.allImportedModuleNames[idx.toNat]! == `PMArch.OrthogonalExchange
+      | some idx => env.allImportedModuleNames[idx.toNat]! == `PMSubstrate.OrthogonalExchange
       | none => false
-    if fromModule || (`PMArch.OrthogonalExchange).isPrefixOf name then
+    if fromModule || (`PMSubstrate.OrthogonalExchange).isPrefixOf name then
       let deps ← Lean.collectAxioms name
       for dep in deps do
         unless dep == ``propext || dep == ``Classical.choice || dep == ``Quot.sound do
